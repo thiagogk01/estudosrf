@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerra Fria: O Tabuleiro Bipolar (1947–1991)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --bg-card: rgba(18, 26, 43, 0.85);
+            --border-card: rgba(255, 255, 255, 0.15);
+            --usa-blue: #3b82f6;
+            --usa-blue-glow: rgba(59, 130, 246, 0.35);
+            --urss-red: #ef4444;
+            --urss-red-glow: rgba(239, 68, 68, 0.35);
+            --gold-accent: #f59e0b;
+            --text-main: #ffffff;
+            --text-muted: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, .font-heading {
+            font-family: 'Outfit', sans-serif;
+            color: #ffffff !important;
+        }
+
+        .text-muted {
+            color: #e2e8f0 !important;
+        }
+
+        /* Ambient Glow background */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .glow-usa {
+            position: absolute;
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, var(--usa-blue-glow) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+        }
+        .glow-urss {
+            position: absolute;
+            top: 40%; right: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, var(--urss-red-glow) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        /* Dual faction borders */
+        .border-usa { border-left: 4px solid var(--usa-blue) !important; }
+        .border-urss { border-left: 4px solid var(--urss-red) !important; }
+
+        /* Badges & Glowing Buttons */
+        .badge-usa { background: rgba(59, 130, 246, 0.25); color: #93c5fd; border: 1px solid rgba(147, 197, 253, 0.5); font-weight: 600; }
+        .badge-urss { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(252, 165, 165, 0.5); font-weight: 600; }
+        .badge-neutral { background: rgba(245, 158, 11, 0.25); color: #fde047; border: 1px solid rgba(253, 224, 71, 0.5); font-weight: 600; }
+
+        .btn-usa {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff !important;
+            box-shadow: 0 0 15px var(--usa-blue-glow);
+            border: none;
+        }
+        .btn-usa:hover { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff !important; }
+        
+        .btn-urss {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #ffffff !important;
+            box-shadow: 0 0 15px var(--urss-red-glow);
+            border: none;
+        }
+        .btn-urss:hover { background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff !important; }
+
+        /* Navbar Styling */
+        .navbar-custom {
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #f1f5f9;
+            font-weight: 500;
+        }
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: #ffffff;
+        }
+
+        /* Timeline styling */
+        .timeline-wrapper {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--usa-blue), var(--urss-red));
+            transform: translateX(-50%);
+        }
+        @media (max-width: 768px) {
+            .timeline-wrapper::before { left: 20px; }
+        }
+        .timeline-node {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .timeline-node .timeline-dot {
+            position: absolute;
+            left: 50%; top: 20px;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 3px solid var(--gold-accent);
+            box-shadow: 0 0 12px var(--gold-accent);
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        @media (max-width: 768px) {
+            .timeline-node .timeline-dot { left: 20px; }
+        }
+
+        /* Nav Pills Custom */
+        .nav-pills .nav-link {
+            color: #f1f5f9;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-card);
+            transition: all 0.3s ease;
+        }
+        .nav-pills .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #ffffff !important;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        }
+
+        /* 3D Flashcard Flip Effect */
+        .flashcard-container {
+            perspective: 1000px;
+            height: 220px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard-container.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            border-radius: 16px;
+        }
+        .flashcard-front {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+        }
+        .flashcard-back {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid var(--gold-accent);
+            transform: rotateY(180deg);
+        }
+
+        /* Quiz Custom */
+        .quiz-opt {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-card);
+            color: #ffffff;
+            padding: 16px 20px;
+            border-radius: 12px;
+            text-align: left;
+            width: 100%;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .quiz-opt:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Glows -->
+    <div class="ambient-bg">
+        <div class="glow-usa"></div>
+        <div class="glow-urss"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand font-heading fw-bold d-flex align-items-center gap-2" href="#">
+                <span class="text-primary"><i class="fa-solid fa-shield-halved"></i></span>
+                <span class="fs-4">Guerra<span class="text-danger">Fria</span></span>
+                <span class="badge badge-neutral ms-2 d-none d-sm-inline-block">1947 – 1991</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link" href="#origens">Origens</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#conflitos">Conflitos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#glossario">Glossário</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#timeline">Linha do Tempo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cards">Flashcards</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-semibold" href="#quiz"><i class="fa-solid fa-fire me-1"></i>Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="py-5 my-4 text-center">
+        <div class="container">
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill badge-neutral mb-3">
+                <i class="fa-solid fa-bolt text-warning"></i>
+                <span class="small fw-bold text-uppercase text-white">Material de Estudo de Alta Performance</span>
+            </div>
+            <h1 class="display-3 fw-extrabold mb-3 text-white">
+                O Tabuleiro do Mundo: <br>
+                <span class="text-transparent bg-clip-text" style="background: linear-gradient(90deg, #60a5fa, #c084fc, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">A Guerra Fria</span>
+            </h1>
+            <p class="lead text-white max-w-2xl mx-auto mb-4" style="max-width: 720px; font-weight: 500;">
+                Um confronto ideológico, espionagem, corrida nuclear e proxy wars entre os blocos 
+                <strong class="text-info fw-bold">Capitalista (EUA)</strong> e <strong class="text-danger fw-bold">Socialista (URSS)</strong>.
+            </p>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="#conflitos" class="btn btn-usa btn-lg px-4 py-3 rounded-3 fw-semibold">
+                    <i class="fa-solid fa-book-open me-2"></i>Iniciar Conteúdo
+                </a>
+                <a href="#cards" class="btn btn-urss btn-lg px-4 py-3 rounded-3 fw-semibold">
+                    <i class="fa-solid fa-layer-group me-2"></i>Revisar Flashcards
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. INTRODUÇÃO & CONTEXTO HISTÓRICO -->
+        <section id="origens" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
+                    <i class="fa-solid fa-globe fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">1. Introdução & Mundo Bipolar</h2>
+                    <p class="text-white small mb-0 opacity-90">Compreenda a divisão geopolítica pós-Segunda Guerra Mundial</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- EUA Card -->
+                <div class="col-md-6">
+                    <div class="glass-card p-4 h-100 border-usa">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge badge-usa fs-6 px-3 py-2"><i class="fa-solid fa-flag-usa me-2"></i>Bloco Ocidental</span>
+                            <i class="fa-solid fa-dollar-sign text-primary fs-4"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-white mb-3">Capitalismo & Doutrina Truman</h3>
+                        <p class="text-white">Liderado pelos <strong class="text-info">Estados Unidos</strong>, o bloco ocidental defendia a economia de mercado, a propriedade privada e a democracia liberal.</p>
+                        <ul class="list-unstyled text-white small space-y-2">
+                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Doutrina Truman (1947):</strong> Compromisso de conter o avanço do comunismo no mundo.</li>
+                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Plano Marshall:</strong> Socorro financeiro bilionário para a reconstrução europeia.</li>
+                            <li class="mb-0"><i class="fa-solid fa-shield text-info me-2"></i><strong class="text-white">OTAN (1949):</strong> Aliança militar de defesa mútua ocidental.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- URSS Card -->
+                <div class="col-md-6">
+                    <div class="glass-card p-4 h-100 border-urss">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge badge-urss fs-6 px-3 py-2"><i class="fa-solid fa-hammer me-2"></i>Bloco Oriental</span>
+                            <i class="fa-solid fa-star text-danger fs-4"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-white mb-3">Socialismo & Planificação</h3>
+                        <p class="text-white">Liderado pela <strong class="text-danger">União Soviética (URSS)</strong>, o bloco oriental defendia a economia estatizada, a propriedade coletiva e o partido único.</p>
+                        <ul class="list-unstyled text-white small">
+                            <li class="mb-2"><i class="fa-solid fa-check text-danger me-2"></i><strong class="text-white">COMECON (1949):</strong> Conselho para Assistência Econômica Mútua entre países socialistas.</li>
+                            <li class="mb-2"><i class="fa-solid fa-check text-danger me-2"></i><strong class="text-white">Kominform:</strong> Organização de coordenação dos partidos comunistas europeus.</li>
+                            <li class="mb-0"><i class="fa-solid fa-shield text-danger me-2"></i><strong class="text-white">Pacto de Varsóvia (1955):</strong> Aliança militar do bloco socialista.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. PRINCIPAIS CONFLITOS E CRISES (TABS) -->
+        <section id="conflitos" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-danger">
+                    <i class="fa-solid fa-jet-fighter-up fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">2. Principais Conflitos e Crises</h2>
+                    <p class="text-white small mb-0 opacity-90">As "Proxy Wars" (Guerras por Procuração) e disputas indiretas</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4">
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-pills mb-4 flex-column flex-sm-row gap-2 justify-content-center" id="conflitosTabs">
+                    <li class="nav-item">
+                        <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#tab-coreia">
+                            <i class="fa-solid fa-person-rifle me-2"></i>Guerra da Coreia
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-cuba">
+                            <i class="fa-solid fa-radiation me-2 text-warning"></i>Crise em Cuba
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-vietna">
+                            <i class="fa-solid fa-helicopter me-2"></i>Guerra do Vietnã
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-espaco">
+                            <i class="fa-solid fa-user-astronaut me-2 text-info"></i>Corrida Espacial
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-berlim">
+                            <i class="fa-solid fa-cubes-stacked me-2"></i>Muro de Berlim
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Contents -->
+                <div class="tab-content text-white p-2" id="conflitosContent">
+                    
+                    <!-- Coreia -->
+                    <div class="tab-pane fade show active" id="tab-coreia">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge badge-neutral mb-2">1950 – 1953</span>
+                                <h3 class="h4 fw-bold text-white mb-3">A Guerra da Coreia</h3>
+                                <p class="text-white">Após o fim da 2ª Guerra, a península coreana foi dividida no <strong class="text-warning">Paralelo 38°</strong>. Em 1950, a Coreia do Norte (apoiada por URSS e China) invadiu a Coreia do Sul (apoiada pela ONU/EUA).</p>
+                                <p class="text-white"><strong class="text-warning">Desfecho:</strong> O conflito terminou em 1953 com um Armistício (Panmunjom), mantendo a divisão da península até os dias de hoje sem um tratado oficial de paz.</p>
+                            </div>
+                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                                <div class="p-4 rounded-4 bg-dark border border-secondary">
+                                    <i class="fa-solid fa-map-location-dot display-3 text-primary mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Divisão Permanente</h4>
+                                    <p class="small text-white opacity-90 mb-0">Coreia do Norte (Comunista) vs Coreia do Sul (Capitalista).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cuba -->
+                    <div class="tab-pane fade" id="tab-cuba">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge badge-urss mb-2">Outubro de 1962</span>
+                                <h3 class="h4 fw-bold text-white mb-3">A Crise dos Mísseis em Cuba</h3>
+                                <p class="text-white">Após a Revolução Cubana (1959), a URSS instalou secretamente bases de mísseis nucleares na ilha de Cuba, a apenas 140km da Flórida (EUA).</p>
+                                <p class="text-white">Durante <strong class="text-warning">13 dias de tensão extrema</strong>, John F. Kennedy ordenou um bloqueio naval. Khrushchev aceitou remover os mísseis em troca da promessa dos EUA de não invadir Cuba e da remoção secreta de mísseis americanos da Turquia.</p>
+                            </div>
+                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                                <div class="p-4 rounded-4 bg-dark border border-danger">
+                                    <i class="fa-solid fa-skull-crossbones display-3 text-danger mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">À Beira do Apocalipse</h4>
+                                    <p class="small text-white opacity-90 mb-0">O ponto mais próximo de um confronto nuclear direto na história.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vietna -->
+                    <div class="tab-pane fade" id="tab-vietna">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge badge-usa mb-2">1955 – 1975</span>
+                                <h3 class="h4 fw-bold text-white mb-3">A Guerra do Vietnã</h3>
+                                <p class="text-white">Conflito entre o Vietnã do Norte (comunista, liderado por Ho Chi Minh com apoio soviético/chinês) e o Vietnã do Sul (apoiado militarmente pelos EUA).</p>
+                                <p class="text-white">Devido à tática de guerrilha dos <em>Vietcongs</em> na selva e à forte oposição popular nos EUA, as tropas americanas se retiraram em 1973. Em 1975, o país foi unificado sob regime socialista.</p>
+                            </div>
+                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                                <div class="p-4 rounded-4 bg-dark border border-secondary">
+                                    <i class="fa-solid fa-tree display-3 text-success mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Derrota de uma Superpotência</h4>
+                                    <p class="small text-white opacity-90 mb-0">Primeira grande derrota militar transmitida ao vivo pela TV americana.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Espaco -->
+                    <div class="tab-pane fade" id="tab-espaco">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge badge-neutral mb-2">1957 – 1969</span>
+                                <h3 class="h4 fw-bold text-white mb-3">A Corrida Espacial & Armamentista</h3>
+                                <p class="text-white">A disputa por prestígio tecnológico e hegemonia científica levou as duas nações ao espaço:</p>
+                                <ul class="text-white">
+                                    <li class="mb-1"><strong class="text-warning">1957 (URSS):</strong> Lançamento do <em>Sputnik 1</em> (1º satélite artificial).</li>
+                                    <li class="mb-1"><strong class="text-warning">1961 (URSS):</strong> Yuri Gagarin torna-se o 1º homem no espaço.</li>
+                                    <li class="mb-1"><strong class="text-warning">1969 (EUA):</strong> Apollo 11 leva Neil Armstrong e Buzz Aldrin à Lua.</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                                <div class="p-4 rounded-4 bg-dark border border-info">
+                                    <i class="fa-solid fa-rocket display-3 text-info mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Propaganda e Ciência</h4>
+                                    <p class="small text-white opacity-90 mb-0">Os foguetes espaciais eram a prova da capacidade dos mísseis balísticos intercontinentais (ICBMs).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Berlim -->
+                    <div class="tab-pane fade" id="tab-berlim">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge badge-neutral mb-2">1961 – 1989</span>
+                                <h3 class="h4 fw-bold text-white mb-3">O Muro de Berlim</h3>
+                                <p class="text-white">Erguido em agosto de 1961 pela Alemanha Oriental (RDA) para conter o êxodo maciço de trabalhadores para Berlim Ocidental (capitalista).</p>
+                                <p class="text-white">Foi o maior símbolo físico da divisão do mundo. Sua <strong class="text-warning">queda em 9 de novembro de 1989</strong> simbolizou o fim iminente do bloco socialista europeu.</p>
+                            </div>
+                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                                <div class="p-4 rounded-4 bg-dark border border-warning">
+                                    <i class="fa-solid fa-dharmachakra display-3 text-warning mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Cortina de Ferro</h4>
+                                    <p class="small text-white opacity-90 mb-0">O símbolo máximo do isolamento ideológico e físico.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. GLOSSÁRIO DE CONCEITOS CHAVE -->
+        <section id="glossario" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-primary">
+                    <i class="fa-solid fa-book-bookmark fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">3. Glossário Essencial</h2>
+                    <p class="text-white small mb-0 opacity-90">Conceitos chave cobrados em vestibulares e exames</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card p-4 h-100">
+                        <i class="fa-solid fa-eye text-warning fs-3 mb-3"></i>
+                        <h4 class="h6 fw-bold text-white">Espionagem (CIA vs KGB)</h4>
+                        <p class="small text-white mb-0">Serviços secretos de inteligência focados em sabotagem, contraespionagem e manipulação política global.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card p-4 h-100">
+                        <i class="fa-solid fa-atom text-danger fs-3 mb-3"></i>
+                        <h4 class="h6 fw-bold text-white">M.A.D.</h4>
+                        <p class="small text-white mb-0"><em>Mutually Assured Destruction</em>: a garantia de que um ataque nuclear provocaria a aniquilação total de ambos os lados.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card p-4 h-100">
+                        <i class="fa-solid fa-door-closed text-primary fs-3 mb-3"></i>
+                        <h4 class="h6 fw-bold text-white">Cortina de Ferro</h4>
+                        <p class="small text-white mb-0">Metáfora usada por Winston Churchill para descrever a fronteira ideológica e física que dividia a Europa.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card p-4 h-100">
+                        <i class="fa-solid fa-rotate text-success fs-3 mb-3"></i>
+                        <h4 class="h6 fw-bold text-white">Perestroika & Glasnost</h4>
+                        <p class="small text-white mb-0">Reformas de Gorbachev nos anos 80: Reestruturação econômica (Perestroika) e Transparência política (Glasnost).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LINHA DO TEMPO INTERATIVA -->
+        <section id="timeline" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
+                    <i class="fa-solid fa-timeline fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">4. Linha do Tempo Cronológica</h2>
+                    <p class="text-white small mb-0 opacity-90">Os eventos cruciais de 1947 a 1991</p>
+                </div>
+            </div>
+
+            <div class="timeline-wrapper">
+                
+                <!-- 1947 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
+                        <span class="badge badge-usa mb-2">1947</span>
+                        <h4 class="h5 fw-bold text-white">Anúncio da Doutrina Truman</h4>
+                        <p class="small text-white mb-0">Início formal da política de contenção ao comunismo pelos EUA.</p>
+                    </div>
+                    <div class="col-md-6 ps-md-5"></div>
+                </div>
+
+                <!-- 1949 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 d-none d-md-block"></div>
+                    <div class="col-md-6 ps-md-5">
+                        <span class="badge badge-urss mb-2">1949</span>
+                        <h4 class="h5 fw-bold text-white">1º Teste Nuclear Soviético & Criação da OTAN</h4>
+                        <p class="small text-white mb-0">A URSS testa sua primeira bomba atômica (RDS-1), terminando o monopólio nuclear americano.</p>
+                    </div>
+                </div>
+
+                <!-- 1961 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
+                        <span class="badge badge-neutral mb-2">1961</span>
+                        <h4 class="h5 fw-bold text-white">Construção do Muro de Berlim</h4>
+                        <p class="small text-white mb-0">Divisão física de Berlim e início da missão espacial de Yuri Gagarin.</p>
+                    </div>
+                    <div class="col-md-6 ps-md-5"></div>
+                </div>
+
+                <!-- 1962 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 d-none d-md-block"></div>
+                    <div class="col-md-6 ps-md-5">
+                        <span class="badge badge-urss mb-2">1962</span>
+                        <h4 class="h5 fw-bold text-white">Crise dos Mísseis em Cuba</h4>
+                        <p class="small text-white mb-0">O ápice do risco nuclear global durante treze dias de impasse naval.</p>
+                    </div>
+                </div>
+
+                <!-- 1989 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
+                        <span class="badge badge-neutral mb-2">1989</span>
+                        <h4 class="h5 fw-bold text-white">Queda do Muro de Berlim</h4>
+                        <p class="small text-white mb-0">Simboliza o colapso dos regimes socialistas no Leste Europeu.</p>
+                    </div>
+                    <div class="col-md-6 ps-md-5"></div>
+                </div>
+
+                <!-- 1991 -->
+                <div class="timeline-node row align-items-center">
+                    <div class="timeline-dot"></div>
+                    <div class="col-md-6 d-none d-md-block"></div>
+                    <div class="col-md-6 ps-md-5">
+                        <span class="badge badge-usa mb-2">Dezembro de 1991</span>
+                        <h4 class="h5 fw-bold text-white">Dissolução da União Soviética</h4>
+                        <p class="small text-white mb-0">Fim formal da URSS e encerramento definitivo da Guerra Fria.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. FLASHCARDS INTERATIVOS (FLIP CARDS) -->
+        <section id="cards" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-info">
+                    <i class="fa-solid fa-clone fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">5. Flashcards de Revisão Ativa</h2>
+                    <p class="text-white small mb-0 opacity-90">Clique no cartão para virar e conferir a resposta</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <span class="badge badge-usa mb-2">Pergunta</span>
+                                <h4 class="h6 fw-bold text-white mb-0">O que foi a Doutrina Truman?</h4>
+                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <span class="badge badge-neutral mb-2">Resposta</span>
+                                <p class="small text-white mb-0">Foi a política externa dos EUA criada em 1947 para conter a expansão do comunismo no mundo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <span class="badge badge-urss mb-2">Pergunta</span>
+                                <h4 class="h6 fw-bold text-white mb-0">O que significava o termo "Glasnost"?</h4>
+                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <span class="badge badge-neutral mb-2">Resposta</span>
+                                <p class="small text-white mb-0">Política soviética de "transparência" promovida por Gorbachev para permitir liberdade de expressão e imprensa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <span class="badge badge-usa mb-2">Pergunta</span>
+                                <h4 class="h6 fw-bold text-white mb-0">Qual foi a resposta soviética à criação da OTAN?</h4>
+                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <span class="badge badge-neutral mb-2">Resposta</span>
+                                <p class="small text-white mb-0">A assinatura do <strong class="text-warning">Pacto de Varsóvia</strong> em 1955, aliança militar do bloco socialista.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. QUIZ INTERATIVO DE FIXAÇÃO -->
+        <section id="quiz" class="my-5 pt-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
+                    <i class="fa-solid fa-circle-question fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">6. Quiz de Fixação</h2>
+                    <p class="text-white small mb-0 opacity-90">Testes rápidos com feedback imediato</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 p-md-5">
+                <div id="quiz-wrapper">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+                        <span id="quiz-progress" class="badge badge-neutral px-3 py-2">Questão 1 de 5</span>
+                        <span id="quiz-score" class="fw-bold text-success fs-5">Pontuação: 0</span>
+                    </div>
+
+                    <h3 id="quiz-question" class="h5 fw-bold text-white mb-4">Carregando pergunta...</h3>
+
+                    <div id="quiz-options" class="d-grid gap-3 mb-4">
+                        <!-- Rendered via JS -->
+                    </div>
+
+                    <div id="quiz-explanation" class="alert alert-dark border-secondary text-white d-none mb-4" role="alert">
+                        <!-- Explanation rendered via JS -->
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button id="quiz-next-btn" class="btn btn-usa px-4 py-2 rounded-3 fw-semibold d-none" onclick="handleNextQuestion()">
+                            Próxima Questão <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quiz-results" class="text-center py-4 d-none">
+                    <div class="mb-3">
+                        <i class="fa-solid fa-award text-warning display-1"></i>
+                    </div>
+                    <h3 class="h4 fw-bold text-white">Quiz Concluído com Sucesso!</h3>
+                    <p id="quiz-final-text" class="text-white lead my-3"></p>
+                    <button class="btn btn-urss px-4 py-2 rounded-3 fw-semibold mt-2" onclick="restartQuiz()">
+                        <i class="fa-solid fa-rotate-right me-2"></i>Reiniciar Quiz
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4 border-top border-secondary text-center text-white small">
+        <div class="container">
+            <p class="mb-1">Guia Didático da Guerra Fria • Design Moderno e Responsivo</p>
+            <p class="mb-0 opacity-80">Pronto para rodar localmente no seu navegador via arquivo HTML único.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Quiz Logic -->
+    <script>
+        const questions = [
+            {
+                q: "Qual evento é considerado o divisor físico mais emblemático da Guerra Fria na Europa?",
+                options: [
+                    "A construção do Canal de Suez",
+                    "A criação da OTAN em Washington",
+                    "A erupção do Muro de Berlim (1961)",
+                    "O bloqueio naval da Baía dos Porcos"
+                ],
+                correct: 2,
+                exp: "O Muro de Berlim dividia a cidade em setor ocidental (capitalista) e oriental (socialista), sendo o símbolo físico máximo da Cortina de Ferro."
+            },
+            {
+                q: "O que previa a Doutrina Truman, lançada pelos EUA em 1947?",
+                options: [
+                    "Um plano de ajuda financeira à União Soviética",
+                    "A política de contenção global ao avanço do comunismo",
+                    "A unificação imediata da Península Coreana",
+                    "O desarmamento nuclear unilateral das superpotências"
+                ],
+                correct: 1,
+                exp: "A Doutrina Truman estabeleceu a política de apoio financeiro e militar a países ameaçados pelo avanço da influência comunista soviética."
+            },
+            {
+                q: "Qual foi o momento considerado o mais próximo de uma guerra nuclear direta entre EUA e URSS?",
+                options: [
+                    "Guerra do Vietnã em 1968",
+                    "Crise dos Mísseis em Cuba em 1962",
+                    "Lançamento do Sputnik 1 em 1957",
+                    "Queda de Saigon em 1975"
+                ],
+                correct: 1,
+                exp: "A Crise dos Mísseis em Cuba durou 13 dias e deixou o mundo sob iminente risco de aniquilação nuclear mútua."
+            },
+            {
+                q: "O que significavam os termos 'Perestroika' e 'Glasnost' promovidos por Mikhail Gorbachev?",
+                options: [
+                    "Reestruturação econômica e Transparência política",
+                    "Aliança militar e Corrida armamentista",
+                    "Espionagem estatal e Censura de imprensa",
+                    "Privatização total e Fechamento de fronteiras"
+                ],
+                correct: 0,
+                exp: "A Perestroika buscou descentralizar a economia e introduzir mercado, enquanto a Glasnost garantiu liberdade de expressão e abertura política."
+            },
+            {
+                q: "A Guerra da Coreia (1950–1953) terminou com qual resultado formal?",
+                options: [
+                    "A vitória total do Sul e anexação do Norte",
+                    "A conversão de toda a península ao socialismo",
+                    "Um armistício mantendo a divisão no Paralelo 38°",
+                    "Um tratado de paz assinado na sede da ONU"
+                ],
+                correct: 2,
+                exp: "O conflito foi paralisado com um armistício em Panmunjom, criando uma Zona Desmilitarizada no Paralelo 38°."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            const q = questions[currentQ];
+            document.getElementById('quiz-progress').innerText = `Questão ${currentQ + 1} de ${questions.length}`;
+            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('quiz-explanation').classList.add('d-none');
+            document.getElementById('quiz-next-btn').classList.add('d-none');
+
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.innerHTML = `<strong class="text-warning me-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+                btn.onclick = () => selectAnswer(idx, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIdx, btnElement) {
+            if (answered) return;
+            answered = true;
+            const q = questions[currentQ];
+            const options = document.getElementById('quiz-options').children;
+
+            if (selectedIdx === q.correct) {
+                btnElement.style.borderColor = '#22c55e';
+                btnElement.style.background = 'rgba(34, 197, 94, 0.15)';
+                score += 20;
+                document.getElementById('quiz-score').innerText = `Pontuação: ${score}`;
+            } else {
+                btnElement.style.borderColor = '#ef4444';
+                btnElement.style.background = 'rgba(239, 68, 68, 0.15)';
+                options[q.correct].style.borderColor = '#22c55e';
+                options[q.correct].style.background = 'rgba(34, 197, 94, 0.15)';
+            }
+
+            for (let b of options) {
+                b.style.pointerEvents = 'none';
+            }
+
+            const expBox = document.getElementById('quiz-explanation');
+            expBox.innerHTML = `<strong><i class="fa-solid fa-circle-info me-2"></i>Explicação:</strong> ${q.exp}`;
+            expBox.classList.remove('d-none');
+
+            document.getElementById('quiz-next-btn').classList.remove('d-none');
+        }
+
+        function handleNextQuestion() {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('quiz-wrapper').classList.add('d-none');
+                document.getElementById('quiz-results').classList.remove('d-none');
+                document.getElementById('quiz-final-text').innerText = `Você concluiu o teste acertando ${(score/100)*questions.length} de ${questions.length} questões (${score} pontos)!`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('quiz-score').innerText = `Pontuação: 0`;
+            document.getElementById('quiz-results').classList.add('d-none');
+            document.getElementById('quiz-wrapper').classList.remove('d-none');
+            loadQuestion();
+        }
+
+        window.onload = function() {
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
