@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerra Fria: O Tabuleiro Bipolar (1947–1991)</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Ensino Religioso: Sociedade, Cultura e Contemporaneidade</title>
     
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         :root {
             --bg-dark: #0b0f19;
             --bg-card: rgba(18, 26, 43, 0.85);
             --border-card: rgba(255, 255, 255, 0.15);
-            --usa-blue: #3b82f6;
-            --usa-blue-glow: rgba(59, 130, 246, 0.35);
-            --urss-red: #ef4444;
-            --urss-red-glow: rgba(239, 68, 68, 0.35);
+            --primary-blue: #3b82f6;
+            --primary-blue-glow: rgba(59, 130, 246, 0.35);
+            --accent-violet: #8b5cf6;
+            --accent-violet-glow: rgba(139, 92, 246, 0.35);
             --gold-accent: #f59e0b;
             --text-main: #ffffff;
             --text-muted: #e2e8f0;
@@ -42,26 +47,35 @@
             color: #e2e8f0 !important;
         }
 
-        /* Ambient Glow background */
+        /* Ambient Glow Background */
         .ambient-bg {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
             overflow: hidden;
             pointer-events: none;
         }
-        .glow-usa {
+
+        .glow-left {
             position: absolute;
-            top: -10%; left: -10%;
-            width: 50vw; height: 50vw;
-            background: radial-gradient(circle, var(--usa-blue-glow) 0%, rgba(0,0,0,0) 70%);
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--primary-blue-glow) 0%, rgba(0, 0, 0, 0) 70%);
             filter: blur(80px);
         }
-        .glow-urss {
+
+        .glow-right {
             position: absolute;
-            top: 40%; right: -10%;
-            width: 50vw; height: 50vw;
-            background: radial-gradient(circle, var(--urss-red-glow) 0%, rgba(0,0,0,0) 70%);
+            top: 35%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--accent-violet-glow) 0%, rgba(0, 0, 0, 0) 70%);
             filter: blur(80px);
         }
 
@@ -72,104 +86,106 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-card);
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.28);
             transform: translateY(-4px);
         }
 
-        /* Dual faction borders */
-        .border-usa { border-left: 4px solid var(--usa-blue) !important; }
-        .border-urss { border-left: 4px solid var(--urss-red) !important; }
+        .glass-card.completed-card {
+            border-left: 4px solid #10b981 !important;
+        }
+
+        /* Accent Borders */
+        .border-indigo { border-left: 4px solid var(--primary-blue) !important; }
+        .border-violet { border-left: 4px solid var(--accent-violet) !important; }
+        .border-gold { border-left: 4px solid var(--gold-accent) !important; }
 
         /* Badges & Glowing Buttons */
-        .badge-usa { background: rgba(59, 130, 246, 0.25); color: #93c5fd; border: 1px solid rgba(147, 197, 253, 0.5); font-weight: 600; }
-        .badge-urss { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(252, 165, 165, 0.5); font-weight: 600; }
-        .badge-neutral { background: rgba(245, 158, 11, 0.25); color: #fde047; border: 1px solid rgba(253, 224, 71, 0.5); font-weight: 600; }
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.25);
+            color: #93c5fd;
+            border: 1px solid rgba(147, 197, 253, 0.5);
+            font-weight: 600;
+        }
 
-        .btn-usa {
+        .badge-violet {
+            background: rgba(139, 92, 246, 0.25);
+            color: #c4b5fd;
+            border: 1px solid rgba(196, 181, 253, 0.5);
+            font-weight: 600;
+        }
+
+        .badge-neutral {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fde047;
+            border: 1px solid rgba(253, 224, 71, 0.5);
+            font-weight: 600;
+        }
+
+        .btn-glow-blue {
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: #ffffff !important;
-            box-shadow: 0 0 15px var(--usa-blue-glow);
+            box-shadow: 0 0 18px var(--primary-blue-glow);
             border: none;
+            transition: all 0.25s ease;
         }
-        .btn-usa:hover { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff !important; }
-        
-        .btn-urss {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
+
+        .btn-glow-blue:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            transform: translateY(-2px);
+        }
+
+        .btn-glow-violet {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: #ffffff !important;
-            box-shadow: 0 0 15px var(--urss-red-glow);
+            box-shadow: 0 0 18px var(--accent-violet-glow);
             border: none;
+            transition: all 0.25s ease;
         }
-        .btn-urss:hover { background: linear-gradient(135deg, #ef4444, #dc2626); color: #ffffff !important; }
+
+        .btn-glow-violet:hover {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            transform: translateY(-2px);
+        }
 
         /* Navbar Styling */
         .navbar-custom {
-            background: rgba(11, 15, 25, 0.95);
-            backdrop-filter: blur(12px);
+            background: rgba(11, 15, 25, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border-card);
         }
 
         .navbar-dark .navbar-nav .nav-link {
             color: #f1f5f9;
             font-weight: 500;
-        }
-        .navbar-dark .navbar-nav .nav-link:hover {
-            color: #ffffff;
+            transition: color 0.2s ease;
         }
 
-        /* Timeline styling */
-        .timeline-wrapper {
-            position: relative;
-            padding: 20px 0;
-        }
-        .timeline-wrapper::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0; bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--usa-blue), var(--urss-red));
-            transform: translateX(-50%);
-        }
-        @media (max-width: 768px) {
-            .timeline-wrapper::before { left: 20px; }
-        }
-        .timeline-node {
-            position: relative;
-            margin-bottom: 40px;
-        }
-        .timeline-node .timeline-dot {
-            position: absolute;
-            left: 50%; top: 20px;
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: var(--bg-dark);
-            border: 3px solid var(--gold-accent);
-            box-shadow: 0 0 12px var(--gold-accent);
-            transform: translateX(-50%);
-            z-index: 2;
-        }
-        @media (max-width: 768px) {
-            .timeline-node .timeline-dot { left: 20px; }
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: #60a5fa;
         }
 
         /* Nav Pills Custom */
         .nav-pills .nav-link {
             color: #f1f5f9;
             border-radius: 12px;
-            padding: 12px 24px;
+            padding: 12px 22px;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.07);
             border: 1px solid var(--border-card);
             transition: all 0.3s ease;
         }
+
         .nav-pills .nav-link:hover {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.14);
         }
+
         .nav-pills .nav-link.active {
             background: linear-gradient(135deg, #1e293b, #0f172a);
             color: #ffffff !important;
@@ -177,12 +193,29 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
         }
 
+        /* Search Input Dark */
+        .search-dark {
+            background: rgba(15, 23, 42, 0.9) !important;
+            border: 1px solid var(--border-card) !important;
+            color: #ffffff !important;
+        }
+
+        .search-dark::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        .search-dark:focus {
+            border-color: var(--primary-blue) !important;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+        }
+
         /* 3D Flashcard Flip Effect */
         .flashcard-container {
             perspective: 1000px;
-            height: 220px;
+            height: 250px;
             cursor: pointer;
         }
+
         .flashcard-inner {
             position: relative;
             width: 100%;
@@ -191,34 +224,42 @@
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
+
         .flashcard-container.flipped .flashcard-inner {
             transform: rotateY(180deg);
         }
+
         .flashcard-front, .flashcard-back {
             position: absolute;
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 28px;
             border-radius: 16px;
         }
+
         .flashcard-front {
             background: var(--bg-card);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
+
         .flashcard-back {
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border: 1px solid var(--gold-accent);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
             transform: rotateY(180deg);
         }
 
         /* Quiz Custom */
         .quiz-opt {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.07);
             border: 1px solid var(--border-card);
             color: #ffffff;
             padding: 16px 20px;
@@ -228,10 +269,43 @@
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        .quiz-opt:hover {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 255, 255, 0.4);
+
+        .quiz-opt:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.45);
             color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .quiz-opt.correct {
+            background: rgba(16, 185, 129, 0.22) !important;
+            border-color: #10b981 !important;
+            color: #6ee7b7 !important;
+        }
+
+        .quiz-opt.wrong {
+            background: rgba(239, 68, 68, 0.22) !important;
+            border-color: #ef4444 !important;
+            color: #fca5a5 !important;
+        }
+
+        /* Custom Checkboxes */
+        .study-check {
+            width: 1.3rem;
+            height: 1.3rem;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .study-check:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+
+        /* Section anchor offset */
+        section {
+            scroll-margin-top: 85px;
         }
 
         /* Scrollbar */
@@ -245,28 +319,27 @@
 
     <!-- Ambient Background Glows -->
     <div class="ambient-bg">
-        <div class="glow-usa"></div>
-        <div class="glow-urss"></div>
+        <div class="glow-left"></div>
+        <div class="glow-right"></div>
     </div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
         <div class="container">
             <a class="navbar-brand font-heading fw-bold d-flex align-items-center gap-2" href="#">
-                <span class="text-primary"><i class="fa-solid fa-shield-halved"></i></span>
-                <span class="fs-4">Guerra<span class="text-danger">Fria</span></span>
-                <span class="badge badge-neutral ms-2 d-none d-sm-inline-block">1947 – 1991</span>
+                <span class="text-info"><i class="fa-solid fa-compass"></i></span>
+                <span class="fs-4">Ensino<span class="text-warning">Religioso</span></span>
+                <span class="badge badge-neutral ms-2 d-none d-sm-inline-block">Prof. Humberto</span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto gap-2">
-                    <li class="nav-item"><a class="nav-link" href="#origens">Origens</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#conflitos">Conflitos</a></li>
-                    <li class="nav-item"><a class="nav-link text-info fw-semibold" href="#descolonizacao"><i class="fa-solid fa-earth-africa me-1"></i>Descolonização</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#bases">Conceitos Base</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#eixos">Eixos Temáticos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#topicos">9 Tópicos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#glossario">Glossário</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#timeline">Linha do Tempo</a></li>
                     <li class="nav-item"><a class="nav-link" href="#cards">Flashcards</a></li>
                     <li class="nav-item"><a class="nav-link text-warning fw-semibold" href="#quiz"><i class="fa-solid fa-fire me-1"></i>Quiz</a></li>
                 </ul>
@@ -279,515 +352,393 @@
         <div class="container">
             <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill badge-neutral mb-3">
                 <i class="fa-solid fa-bolt text-warning"></i>
-                <span class="small fw-bold text-uppercase text-white">Material de Estudo de Alta Performance</span>
+                <span class="small fw-bold text-uppercase text-white">Roteiro Completo de Revisão • 9 Eixos Temáticos</span>
             </div>
             <h1 class="display-3 fw-extrabold mb-3 text-white">
-                O Tabuleiro do Mundo: <br>
-                <span class="text-transparent bg-clip-text" style="background: linear-gradient(90deg, #60a5fa, #c084fc, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">A Guerra Fria</span>
+                O Sagrado no Mundo Atual: <br>
+                <span style="background: linear-gradient(90deg, #60a5fa, #c084fc, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Religião & Sociedade</span>
             </h1>
-            <p class="lead text-white max-w-2xl mx-auto mb-4" style="max-width: 720px; font-weight: 500;">
-                Um confronto ideológico, espionagem, corrida nuclear e proxy wars entre os blocos 
-                <strong class="text-info fw-bold">Capitalista (EUA)</strong> e <strong class="text-danger fw-bold">Socialista (URSS)</strong>.
+            <p class="lead text-white mx-auto mb-4" style="max-width: 760px; font-weight: 500;">
+                Explore as transformações contemporâneas da fé: <strong class="text-info">Secularização e Laicidade</strong>, <strong class="text-warning">Sincretismo</strong>, <strong style="color: #c4b5fd;">Orientalização do Ocidente</strong>, <strong class="text-info">Mercado Religioso</strong> e as raízes entre <strong class="text-warning">Judaísmo e Cristianismo</strong>.
             </p>
 
             <div class="d-flex flex-wrap justify-content-center gap-3">
-                <a href="#conflitos" class="btn btn-usa btn-lg px-4 py-3 rounded-3 fw-semibold">
-                    <i class="fa-solid fa-book-open me-2"></i>Iniciar Conteúdo
+                <a href="#topicos" class="btn btn-glow-blue btn-lg px-4 py-3 rounded-3 fw-semibold">
+                    <i class="fa-solid fa-book-open me-2"></i>Estudar os 9 Tópicos
                 </a>
-                <a href="#cards" class="btn btn-urss btn-lg px-4 py-3 rounded-3 fw-semibold">
-                    <i class="fa-solid fa-layer-group me-2"></i>Revisar Flashcards
+                <a href="#cards" class="btn btn-glow-violet btn-lg px-4 py-3 rounded-3 fw-semibold">
+                    <i class="fa-solid fa-layer-group me-2"></i>Praticar Flashcards 3D
                 </a>
             </div>
         </div>
     </header>
 
-    <div class="container">
+    <div class="container pb-5">
 
-        <!-- 1. INTRODUÇÃO & CONTEXTO HISTÓRICO -->
-        <section id="origens" class="my-5 pt-4">
+        <!-- 1. CONCEITOS BASE (COMPARATIVO LADO A LADO) -->
+        <section id="bases" class="my-5 pt-3">
             <div class="d-flex align-items-center gap-3 mb-4">
                 <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
-                    <i class="fa-solid fa-globe fa-xl"></i>
+                    <i class="fa-solid fa-scale-balanced fa-xl"></i>
                 </div>
                 <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">1. Introdução & Mundo Bipolar</h2>
-                    <p class="text-white small mb-0 opacity-90">Compreenda a divisão geopolítica pós-Segunda Guerra Mundial</p>
+                    <h2 class="h3 fw-bold mb-0 text-white">1. Pilares Conceituais: Secularização vs. Laicidade</h2>
+                    <p class="text-white small mb-0 opacity-90">A distinção fundamental para compreender religião, Estado e sociedade</p>
                 </div>
             </div>
 
             <div class="row g-4">
-                <!-- EUA Card -->
+                <!-- Card Secularização -->
                 <div class="col-md-6">
-                    <div class="glass-card p-4 h-100 border-usa">
+                    <div class="glass-card p-4 h-100 border-indigo">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="badge badge-usa fs-6 px-3 py-2"><i class="fa-solid fa-flag-usa me-2"></i>Bloco Ocidental</span>
-                            <i class="fa-solid fa-dollar-sign text-primary fs-4"></i>
+                            <span class="badge badge-blue fs-6 px-3 py-2"><i class="fa-solid fa-users me-2"></i>Processo Sociológico</span>
+                            <i class="fa-solid fa-city text-info fs-4"></i>
                         </div>
-                        <h3 class="h4 fw-bold text-white mb-3">Capitalismo & Doutrina Truman</h3>
-                        <p class="text-white">Liderado pelos <strong class="text-info">Estados Unidos</strong>, o bloco ocidental defendia a economia de mercado, a propriedade privada e a democracia liberal.</p>
-                        <ul class="list-unstyled text-white small space-y-2">
-                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Doutrina Truman (1947):</strong> Compromisso de conter o avanço do comunismo no mundo.</li>
-                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Plano Marshall:</strong> Socorro financeiro bilionário para a reconstrução europeia.</li>
-                            <li class="mb-0"><i class="fa-solid fa-shield text-info me-2"></i><strong class="text-white">OTAN (1949):</strong> Aliança militar de defesa mútua ocidental.</li>
+                        <h3 class="h4 fw-bold text-white mb-3">Secularização</h3>
+                        <p class="text-white">Processo histórico e cultural em que a religião perde o monopólio sobre a ciência, a moral cotidiana, as artes e as instituições sociais.</p>
+                        <ul class="list-unstyled text-white small mb-0">
+                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Desencantamento do Mundo:</strong> Racionalização da vida e avanço das explicações científicas (Max Weber).</li>
+                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Privatização da Fé:</strong> A religião deixa de ser obrigação coletiva e passa a ser escolha individual.</li>
+                            <li class="mb-0"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Pluralismo:</strong> Convivência de múltiplas visões de mundo no mesmo espaço urbano.</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- URSS Card -->
+                <!-- Card Laicidade -->
                 <div class="col-md-6">
-                    <div class="glass-card p-4 h-100 border-urss">
+                    <div class="glass-card p-4 h-100 border-violet">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="badge badge-urss fs-6 px-3 py-2"><i class="fa-solid fa-hammer me-2"></i>Bloco Oriental</span>
-                            <i class="fa-solid fa-star text-danger fs-4"></i>
+                            <span class="badge badge-violet fs-6 px-3 py-2"><i class="fa-solid fa-landmark me-2"></i>Princípio Político-Jurídico</span>
+                            <i class="fa-solid fa-gavel text-warning fs-4"></i>
                         </div>
-                        <h3 class="h4 fw-bold text-white mb-3">Socialismo & Planificação</h3>
-                        <p class="text-white">Liderado pela <strong class="text-danger">União Soviética (URSS)</strong>, o bloco oriental defendia a economia estatizada, a propriedade coletiva e o partido único.</p>
-                        <ul class="list-unstyled text-white small">
-                            <li class="mb-2"><i class="fa-solid fa-check text-danger me-2"></i><strong class="text-white">COMECON (1949):</strong> Conselho para Assistência Econômica Mútua entre países socialistas.</li>
-                            <li class="mb-2"><i class="fa-solid fa-check text-danger me-2"></i><strong class="text-white">Kominform:</strong> Organização de coordenação dos partidos comunistas europeus.</li>
-                            <li class="mb-0"><i class="fa-solid fa-shield text-danger me-2"></i><strong class="text-white">Pacto de Varsóvia (1955):</strong> Aliança militar do bloco socialista.</li>
+                        <h3 class="h4 fw-bold text-white mb-3">Laicidade Estatal</h3>
+                        <p class="text-white">Princípio constitucional que estabelece a separação formal entre Estado e instituições religiosas, garantindo imparcialidade e liberdade de consciência.</p>
+                        <ul class="list-unstyled text-white small mb-0">
+                            <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i><strong class="text-white">Neutralidade do Estado:</strong> O poder público não adota religião oficial nem privilegia credos.</li>
+                            <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i><strong class="text-white">Liberdade de Crença e Não Crença:</strong> Protege tanto religiosos quanto ateus e agnósticos.</li>
+                            <li class="mb-0"><i class="fa-solid fa-check text-warning me-2"></i><strong class="text-white">Estado Laico ≠ Estado Ateu:</strong> O Estado laico garante o direito ao culto; o ateu o reprime.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. PRINCIPAIS CONFLITOS E CRISES (TABS) -->
-        <section id="conflitos" class="my-5 pt-4">
+        <!-- 2. EIXOS TEMÁTICOS INTERATIVOS (TABS / PILLS) -->
+        <section id="eixos" class="my-5 pt-3">
             <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="p-3 rounded-3 bg-dark border border-secondary text-danger">
-                    <i class="fa-solid fa-jet-fighter-up fa-xl"></i>
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-info">
+                    <i class="fa-solid fa-layer-group fa-xl"></i>
                 </div>
                 <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">2. Principais Conflitos e Crises</h2>
-                    <p class="text-white small mb-0 opacity-90">As "Proxy Wars" (Guerras por Procuração) e disputas indiretas</p>
+                    <h2 class="h3 fw-bold mb-0 text-white">2. Grandes Eixos Temáticos</h2>
+                    <p class="text-white small mb-0 opacity-90">Navegue pelas sínteses temáticas do programa de Ensino Religioso</p>
                 </div>
             </div>
 
             <div class="glass-card p-4">
-                <!-- Navigation Tabs -->
-                <ul class="nav nav-pills mb-4 flex-column flex-sm-row gap-2 justify-content-center" id="conflitosTabs">
-                    <li class="nav-item">
-                        <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#tab-coreia">
-                            <i class="fa-solid fa-person-rifle me-2"></i>Guerra da Coreia
+                <ul class="nav nav-pills mb-4 flex-column flex-md-row gap-2 justify-content-center" id="eixosTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#tab-contemporaneo" type="button">
+                            <i class="fa-solid fa-cart-shopping me-2 text-info"></i>Fé & Consumo
                         </button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-cuba">
-                            <i class="fa-solid fa-radiation me-2 text-warning"></i>Crise em Cuba
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-oriente" type="button">
+                            <i class="fa-solid fa-yin-yang me-2 text-warning"></i>Orientalização & Sincretismo
                         </button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-vietna">
-                            <i class="fa-solid fa-helicopter me-2"></i>Guerra do Vietnã
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-politica" type="button">
+                            <i class="fa-solid fa-bullhorn me-2 text-danger"></i>Política & Fundamentalismo
                         </button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-espaco">
-                            <i class="fa-solid fa-user-astronaut me-2 text-info"></i>Corrida Espacial
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-berlim">
-                            <i class="fa-solid fa-cubes-stacked me-2"></i>Muro de Berlim
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#tab-abraamicas" type="button">
+                            <i class="fa-solid fa-menorah me-2 text-info"></i>Judaísmo & Cristianismo
                         </button>
                     </li>
                 </ul>
 
-                <!-- Tab Contents -->
-                <div class="tab-content text-white p-2" id="conflitosContent">
-                    
-                    <!-- Coreia -->
-                    <div class="tab-pane fade show active" id="tab-coreia">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <span class="badge badge-neutral mb-2">1950 – 1953</span>
-                                <h3 class="h4 fw-bold text-white mb-3">A Guerra da Coreia</h3>
-                                <p class="text-white">Após o fim da 2ª Guerra, a península coreana foi dividida no <strong class="text-warning">Paralelo 38°</strong>. Em 1950, a Coreia do Norte (apoiada por URSS e China) invadiu a Coreia do Sul (apoiada pela ONU/EUA).</p>
-                                <p class="text-white"><strong class="text-warning">Desfecho:</strong> O conflito terminou em 1953 com um Armistício (Panmunjom), mantendo a divisão da península até os dias de hoje sem um tratado oficial de paz.</p>
+                <div class="tab-content text-white p-2">
+                    <!-- Tab 1 -->
+                    <div class="tab-pane fade show active" id="tab-contemporaneo">
+                        <div class="row align-items-center g-4">
+                            <div class="col-lg-8">
+                                <span class="badge badge-blue mb-2">Temas 1 e 7</span>
+                                <h3 class="h4 fw-bold text-white mb-3">Novos Movimentos Religiosos & Self-Service da Fé</h3>
+                                <p class="text-white">Na contemporaneidade, enfraquece-se a transmissão hereditária da religião. O indivíduo torna-se um <strong class="text-warning">buscador espiritual autônomo</strong>, combinando práticas de diferentes origens ("religião à la carte").</p>
+                                <p class="text-white mb-0">Paralelamente, instituições passam a operar na lógica do <strong class="text-info">mercado religioso</strong>, utilizando mídia de massa, marketing e linguagem voltada ao bem-estar emocional e prosperidade imediata.</p>
                             </div>
-                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                            <div class="col-lg-4 text-center">
                                 <div class="p-4 rounded-4 bg-dark border border-secondary">
-                                    <i class="fa-solid fa-map-location-dot display-3 text-primary mb-3"></i>
-                                    <h4 class="h6 text-white fw-bold mb-1">Divisão Permanente</h4>
-                                    <p class="small text-white opacity-90 mb-0">Coreia do Norte (Comunista) vs Coreia do Sul (Capitalista).</p>
+                                    <i class="fa-solid fa-sparkles display-4 text-warning mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Espiritualidade Flexível</h4>
+                                    <p class="small text-white opacity-90 mb-0">Menos vínculo institucional rígido e maior foco na experiência subjetiva.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Cuba -->
-                    <div class="tab-pane fade" id="tab-cuba">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <span class="badge badge-urss mb-2">Outubro de 1962</span>
-                                <h3 class="h4 fw-bold text-white mb-3">A Crise dos Mísseis em Cuba</h3>
-                                <p class="text-white">Após a Revolução Cubana (1959), a URSS instalou secretamente bases de mísseis nucleares na ilha de Cuba, a apenas 140km da Flórida (EUA).</p>
-                                <p class="text-white">Durante <strong class="text-warning">13 dias de tensão extrema</strong>, John F. Kennedy ordenou um bloqueio naval. Khrushchev aceitou remover os mísseis em troca da promessa dos EUA de não invadir Cuba e da remoção secreta de mísseis americanos da Turquia.</p>
+                    <!-- Tab 2 -->
+                    <div class="tab-pane fade" id="tab-oriente">
+                        <div class="row align-items-center g-4">
+                            <div class="col-lg-8">
+                                <span class="badge badge-violet mb-2">Temas 2, 3 e 8</span>
+                                <h3 class="h4 fw-bold text-white mb-3">Sincretismo, Hibridismo e Orientalização do Ocidente</h3>
+                                <p class="text-white">O <strong class="text-warning">sincretismo</strong> marca a fusão simbólica entre tradições (como matrizes africanas, indígenas e catolicismo no Brasil), enquanto o <strong class="text-info">hibridismo</strong> expressa a mistura fluida de crenças no mundo globalizado.</p>
+                                <p class="text-white mb-0">Com a <strong class="text-warning">orientalização do Ocidente</strong> (Colin Campbell), conceitos como meditação, yoga, karma, reencarnação e visão holística da natureza tornaram-se parte da cultura, psicologia e medicina ocidentais.</p>
                             </div>
-                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
-                                <div class="p-4 rounded-4 bg-dark border border-danger">
-                                    <i class="fa-solid fa-skull-crossbones display-3 text-danger mb-3"></i>
-                                    <h4 class="h6 text-white fw-bold mb-1">À Beira do Apocalipse</h4>
-                                    <p class="small text-white opacity-90 mb-0">O ponto mais próximo de um confronto nuclear direto na história.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Vietna -->
-                    <div class="tab-pane fade" id="tab-vietna">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <span class="badge badge-usa mb-2">1955 – 1975</span>
-                                <h3 class="h4 fw-bold text-white mb-3">A Guerra do Vietnã</h3>
-                                <p class="text-white">Conflito entre o Vietnã do Norte (comunista, liderado por Ho Chi Minh com apoio soviético/chinês) e o Vietnã do Sul (apoiado militarmente pelos EUA).</p>
-                                <p class="text-white">Devido à tática de guerrilha dos <em>Vietcongs</em> na selva e à forte oposição popular nos EUA, as tropas americanas se retiraram em 1973. Em 1975, o país foi unificado sob regime socialista.</p>
-                            </div>
-                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
+                            <div class="col-lg-4 text-center">
                                 <div class="p-4 rounded-4 bg-dark border border-secondary">
-                                    <i class="fa-solid fa-tree display-3 text-success mb-3"></i>
-                                    <h4 class="h6 text-white fw-bold mb-1">Derrota de uma Superpotência</h4>
-                                    <p class="small text-white opacity-90 mb-0">Primeira grande derrota militar transmitida ao vivo pela TV americana.</p>
+                                    <i class="fa-solid fa-spa display-4 text-info mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Intercâmbio Oriente-Ocidente</h4>
+                                    <p class="small text-white opacity-90 mb-0">Absorção cultural de filosofias indianas, chinesas e japonesas no cotidiano.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Espaco -->
-                    <div class="tab-pane fade" id="tab-espaco">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <span class="badge badge-neutral mb-2">1957 – 1969</span>
-                                <h3 class="h4 fw-bold text-white mb-3">A Corrida Espacial & Armamentista</h3>
-                                <p class="text-white">A disputa por prestígio tecnológico e hegemonia científica levou as duas nações ao espaço:</p>
-                                <ul class="text-white">
-                                    <li class="mb-1"><strong class="text-warning">1957 (URSS):</strong> Lançamento do <em>Sputnik 1</em> (1º satélite artificial).</li>
-                                    <li class="mb-1"><strong class="text-warning">1961 (URSS):</strong> Yuri Gagarin torna-se o 1º homem no espaço.</li>
-                                    <li class="mb-1"><strong class="text-warning">1969 (EUA):</strong> Apollo 11 leva Neil Armstrong e Buzz Aldrin à Lua.</li>
-                                </ul>
+                    <!-- Tab 3 -->
+                    <div class="tab-pane fade" id="tab-politica">
+                        <div class="row align-items-center g-4">
+                            <div class="col-lg-8">
+                                <span class="badge badge-neutral mb-2">Temas 4, 5 e 6</span>
+                                <h3 class="h4 fw-bold text-white mb-3">Política, Dessecularização e Fundamentalismo</h3>
+                                <p class="text-white">Ao contrário da previsão de que a religião desapareceria, observa-se hoje sua forte presença na <strong class="text-info">esfera pública</strong> (bancadas parlamentares, debates éticos e mobilização social).</p>
+                                <p class="text-white mb-0">Como reação defensiva contra a secularização e o relativismo moderno, surge o <strong class="text-warning">fundamentalismo religioso</strong>, caracterizado pelo literalismo na leitura dos textos sagrados e oposição às mudanças nos costumes.</p>
                             </div>
-                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
-                                <div class="p-4 rounded-4 bg-dark border border-info">
-                                    <i class="fa-solid fa-rocket display-3 text-info mb-3"></i>
-                                    <h4 class="h6 text-white fw-bold mb-1">Propaganda e Ciência</h4>
-                                    <p class="small text-white opacity-90 mb-0">Os foguetes espaciais eram a prova da capacidade dos mísseis balísticos intercontinentais (ICBMs).</p>
+                            <div class="col-lg-4 text-center">
+                                <div class="p-4 rounded-4 bg-dark border border-secondary">
+                                    <i class="fa-solid fa-book-bible display-4 text-danger mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Reação à Modernidade</h4>
+                                    <p class="small text-white opacity-90 mb-0">O fundamentalismo é um fenômeno moderno nascido em resposta ao secularismo.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Berlim -->
-                    <div class="tab-pane fade" id="tab-berlim">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <span class="badge badge-neutral mb-2">1961 – 1989</span>
-                                <h3 class="h4 fw-bold text-white mb-3">O Muro de Berlim</h3>
-                                <p class="text-white">Erguido em agosto de 1961 pela Alemanha Oriental (RDA) para conter o êxodo maciço de trabalhadores para Berlim Ocidental (capitalista).</p>
-                                <p class="text-white">Foi o maior símbolo físico da divisão do mundo. Sua <strong class="text-warning">queda em 9 de novembro de 1989</strong> simbolizou o fim iminente do bloco socialista europeu.</p>
+                    <!-- Tab 4 -->
+                    <div class="tab-pane fade" id="tab-abraamicas">
+                        <div class="row align-items-center g-4">
+                            <div class="col-lg-8">
+                                <span class="badge badge-blue mb-2">Tema 9</span>
+                                <h3 class="h4 fw-bold text-white mb-3">Relações Históricas e Religiosas: Judaísmo e Cristianismo</h3>
+                                <p class="text-white">O Cristianismo nasceu no interior do Judaísmo do século I. Ambas são religiões <strong class="text-warning">monoteístas abraâmicas</strong> que compartilham a Bíblia Hebraica (Antigo Testamento), os Dez Mandamentos e a tradição profética.</p>
+                                <p class="text-white mb-0">A separação ocorreu em torno da figura de <strong class="text-info">Jesus de Nazaré</strong>: reconhecido como o Messias e Filho de Deus pelos cristãos, mas não aceito como Messias pelo Judaísmo, que ainda aguarda a era messiânica.</p>
                             </div>
-                            <div class="col-lg-5 text-center mt-3 mt-lg-0">
-                                <div class="p-4 rounded-4 bg-dark border border-warning">
-                                    <i class="fa-solid fa-dharmachakra display-3 text-warning mb-3"></i>
-                                    <h4 class="h6 text-white fw-bold mb-1">Cortina de Ferro</h4>
-                                    <p class="small text-white opacity-90 mb-0">O símbolo máximo do isolamento ideológico e físico.</p>
+                            <div class="col-lg-4 text-center">
+                                <div class="p-4 rounded-4 bg-dark border border-secondary">
+                                    <i class="fa-solid fa-star-of-david display-4 text-warning mb-3"></i>
+                                    <h4 class="h6 text-white fw-bold mb-1">Raízes Compartilhadas</h4>
+                                    <p class="small text-white opacity-90 mb-0">Patrimônio ético comum e diálogo inter-religioso contemporâneo.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- 3. DESCOLONIZAÇÃO DA ÁFRICA E ÁSIA & BANDUNG -->
-        <section id="descolonizacao" class="my-5 pt-4">
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="p-3 rounded-3 bg-dark border border-info text-info">
-                    <i class="fa-solid fa-earth-africa fa-xl"></i>
-                </div>
-                <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">3. Descolonização da África, Ásia e Bandung (1955)</h2>
-                    <p class="text-white small mb-0 opacity-90">A luta de libertação nacional e a emergência do Terceiro Mundo</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <!-- Por que ocorreu durante a Guerra Fria? -->
-                <div class="col-md-6">
-                    <div class="glass-card p-4 h-100 border-start border-info border-4">
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <i class="fa-solid fa-handshake-angle text-info fs-4"></i>
-                            <h3 class="h4 fw-bold text-white mb-0">O Contexto de Independência</h3>
-                        </div>
-                        <p class="text-white">Com o enfraquecimento das potências europeias (Reino Unido, França) pós-2ª Guerra, os povos colonizados iniciaram processos de libertação nacional.</p>
-                        <ul class="list-unstyled text-white small">
-                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Disputa de Influência:</strong> EUA e URSS financiaram movimentos de independência para atrair novos aliados.</li>
-                            <li class="mb-2"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">O Ano da África (1960):</strong> 17 nações africanas conquistaram a independência formal em um único ano.</li>
-                            <li class="mb-0"><i class="fa-solid fa-check text-info me-2"></i><strong class="text-white">Ásia:</strong> Independência da Índia (1947, liderada por Gandhi) e Revolução Chinesa (1949).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Conferência de Bandung (1955) -->
-                <div class="col-md-6">
-                    <div class="glass-card p-4 h-100 border-start border-warning border-4">
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <i class="fa-solid fa-bullhorn text-warning fs-4"></i>
-                            <h3 class="h4 fw-bold text-white mb-0">Conferência de Bandung (1955)</h3>
-                        </div>
-                        <p class="text-white">Reunião histórica em Bandung (Indonésia) com líderes de 29 países recém-independentes da África e Ásia.</p>
-                        <ul class="list-unstyled text-white small">
-                            <li class="mb-2"><i class="fa-solid fa-shield-halved text-warning me-2"></i><strong class="text-white">Não-Alinhamento:</strong> Recusa em servir como peões ou satélites dos blocos ocidental ou soviético.</li>
-                            <li class="mb-2"><i class="fa-solid fa-globe text-warning me-2"></i><strong class="text-white">Surgimento do "Terceiro Mundo":</strong> Defesa da soberania, igualdade racial e autodeterminação.</li>
-                            <li class="mb-0"><i class="fa-solid fa-handshake text-warning me-2"></i><strong class="text-white">Combate ao Neocolonialismo:</strong> Condenação a todas as formas de dominação imperialista.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. GLOSSÁRIO DE CONCEITOS CHAVE -->
-        <section id="glossario" class="my-5 pt-4">
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="p-3 rounded-3 bg-dark border border-secondary text-primary">
-                    <i class="fa-solid fa-book-bookmark fa-xl"></i>
-                </div>
-                <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">4. Glossário Essencial</h2>
-                    <p class="text-white small mb-0 opacity-90">Conceitos chave cobrados em vestibulares e exames</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="glass-card p-4 h-100">
-                        <i class="fa-solid fa-eye text-warning fs-3 mb-3"></i>
-                        <h4 class="h6 fw-bold text-white">Espionagem (CIA vs KGB)</h4>
-                        <p class="small text-white mb-0">Serviços secretos de inteligência focados em sabotagem, contraespionagem e manipulação política global.</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="glass-card p-4 h-100">
-                        <i class="fa-solid fa-atom text-danger fs-3 mb-3"></i>
-                        <h4 class="h6 fw-bold text-white">M.A.D.</h4>
-                        <p class="small text-white mb-0"><em>Mutually Assured Destruction</em>: a garantia de que um ataque nuclear provocaria a aniquilação total de ambos os lados.</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="glass-card p-4 h-100">
-                        <i class="fa-solid fa-compass text-info fs-3 mb-3"></i>
-                        <h4 class="h6 fw-bold text-white">Não-Alinhamento</h4>
-                        <p class="small text-white mb-0">Posição neutra assumida por nações do Terceiro Mundo recusando submissão militar aos EUA ou URSS.</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="glass-card p-4 h-100">
-                        <i class="fa-solid fa-rotate text-success fs-3 mb-3"></i>
-                        <h4 class="h6 fw-bold text-white">Perestroika & Glasnost</h4>
-                        <p class="small text-white mb-0">Reformas de Gorbachev nos anos 80: Reestruturação econômica (Perestroika) e Transparência política (Glasnost).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. LINHA DO TEMPO INTERATIVA -->
-        <section id="timeline" class="my-5 pt-4">
+        <!-- 3. TODOS OS 9 TÓPICOS DO CONTEÚDO (COM BUSCA, FILTRO E PROGRESSO) -->
+        <section id="topicos" class="my-5 pt-3">
             <div class="d-flex align-items-center gap-3 mb-4">
                 <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
-                    <i class="fa-solid fa-timeline fa-xl"></i>
+                    <i class="fa-solid fa-list-check fa-xl"></i>
                 </div>
                 <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">5. Linha do Tempo Cronológica</h2>
-                    <p class="text-white small mb-0 opacity-90">Os eventos cruciais de 1947 a 1991</p>
+                    <h2 class="h3 fw-bold mb-0 text-white">3. Os 9 Tópicos Completos para Revisão</h2>
+                    <p class="text-white small mb-0 opacity-90">Marque os conteúdos estudados — seu progresso fica salvo automaticamente</p>
                 </div>
             </div>
 
-            <div class="timeline-wrapper">
-                
-                <!-- 1947 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
-                        <span class="badge badge-usa mb-2">1947</span>
-                        <h4 class="h5 fw-bold text-white">Doutrina Truman & Independência da Índia</h4>
-                        <p class="small text-white mb-0">Início formal da contenção ao comunismo e o fim do domínio britânico no subcontinente indiano.</p>
-                    </div>
-                    <div class="col-md-6 ps-md-5"></div>
-                </div>
-
-                <!-- 1955 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 d-none d-md-block"></div>
-                    <div class="col-md-6 ps-md-5">
-                        <span class="badge badge-neutral mb-2">1955</span>
-                        <h4 class="h5 fw-bold text-white">Conferência de Bandung</h4>
-                        <p class="small text-white mb-0">Reunião histórica de líderes afro-asiáticos dando origem ao Movimento dos Países Não Alinhados.</p>
-                    </div>
-                </div>
-
-                <!-- 1960 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
-                        <span class="badge badge-neutral mb-2">1960</span>
-                        <h4 class="h5 fw-bold text-white">O "Ano da África"</h4>
-                        <p class="small text-white mb-0">Dezoito países africanos conquistam a independência em um processo acelerado de descolonização.</p>
-                    </div>
-                    <div class="col-md-6 ps-md-5"></div>
-                </div>
-
-                <!-- 1962 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 d-none d-md-block"></div>
-                    <div class="col-md-6 ps-md-5">
-                        <span class="badge badge-urss mb-2">1962</span>
-                        <h4 class="h5 fw-bold text-white">Crise dos Mísseis em Cuba</h4>
-                        <p class="small text-white mb-0">O ápice do risco nuclear global durante treze dias de impasse naval.</p>
-                    </div>
-                </div>
-
-                <!-- 1989 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 text-md-end mb-3 mb-md-0 pe-md-5">
-                        <span class="badge badge-neutral mb-2">1989</span>
-                        <h4 class="h5 fw-bold text-white">Queda do Muro de Berlim</h4>
-                        <p class="small text-white mb-0">Simboliza o colapso dos regimes socialistas no Leste Europeu.</p>
-                    </div>
-                    <div class="col-md-6 ps-md-5"></div>
-                </div>
-
-                <!-- 1991 -->
-                <div class="timeline-node row align-items-center">
-                    <div class="timeline-dot"></div>
-                    <div class="col-md-6 d-none d-md-block"></div>
-                    <div class="col-md-6 ps-md-5">
-                        <span class="badge badge-usa mb-2">Dezembro de 1991</span>
-                        <h4 class="h5 fw-bold text-white">Dissolução da União Soviética</h4>
-                        <p class="small text-white mb-0">Fim formal da URSS e encerramento definitivo da Guerra Fria.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 6. FLASHCARDS INTERATIVOS (FLIP CARDS) -->
-        <section id="cards" class="my-5 pt-4">
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="p-3 rounded-3 bg-dark border border-secondary text-info">
-                    <i class="fa-solid fa-clone fa-xl"></i>
-                </div>
-                <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">6. Flashcards de Revisão Ativa</h2>
-                    <p class="text-white small mb-0 opacity-90">Clique no cartão para virar e conferir a resposta</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <!-- Card 1 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <span class="badge badge-usa mb-2">Pergunta</span>
-                                <h4 class="h6 fw-bold text-white mb-0">O que foi a Doutrina Truman?</h4>
-                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
-                            </div>
-                            <div class="flashcard-back">
-                                <span class="badge badge-neutral mb-2">Resposta</span>
-                                <p class="small text-white mb-0">Foi a política externa dos EUA criada em 1947 para conter a expansão do comunismo no mundo.</p>
-                            </div>
+            <!-- Barra de Progresso & Controles -->
+            <div class="glass-card p-4 mb-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-7">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold text-white"><i class="fa-solid fa-chart-line text-info me-2"></i>Progresso de Estudo</span>
+                            <span class="badge badge-blue px-3 py-1" id="progressText">0 de 9 concluídos (0%)</span>
+                        </div>
+                        <div class="progress bg-dark border border-secondary" style="height: 12px; border-radius: 99px;">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%;"></div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Card 2 (Novo - Bandung) -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <span class="badge badge-neutral mb-2">Pergunta</span>
-                                <h4 class="h6 fw-bold text-white mb-0">Qual foi o objetivo da Conferência de Bandung (1955)?</h4>
-                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
-                            </div>
-                            <div class="flashcard-back">
-                                <span class="badge badge-neutral mb-2">Resposta</span>
-                                <p class="small text-white mb-0">Reunir nações recém-independentes da África e Ásia para promover o não-alinhamento militar a EUA e URSS.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <span class="badge badge-urss mb-2">Pergunta</span>
-                                <h4 class="h6 fw-bold text-white mb-0">O que significava o termo "Glasnost"?</h4>
-                                <span class="small text-warning fw-semibold mt-3"><i class="fa-solid fa-rotate me-1"></i> Clique para virar</span>
-                            </div>
-                            <div class="flashcard-back">
-                                <span class="badge badge-neutral mb-2">Resposta</span>
-                                <p class="small text-white mb-0">Política soviética de "transparência" promovida por Gorbachev para permitir liberdade de expressão e imprensa.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. QUIZ INTERATIVO DE FIXAÇÃO -->
-        <section id="quiz" class="my-5 pt-4">
-            <div class="d-flex align-items-center gap-3 mb-4">
-                <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
-                    <i class="fa-solid fa-circle-question fa-xl"></i>
-                </div>
-                <div>
-                    <h2 class="h3 fw-bold mb-0 text-white">7. Quiz de Fixação</h2>
-                    <p class="text-white small mb-0 opacity-90">Testes rápidos com feedback imediato</p>
-                </div>
-            </div>
-
-            <div class="glass-card p-4 p-md-5">
-                <div id="quiz-wrapper">
-                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
-                        <span id="quiz-progress" class="badge badge-neutral px-3 py-2">Questão 1 de 6</span>
-                        <span id="quiz-score" class="fw-bold text-success fs-5">Pontuação: 0</span>
-                    </div>
-
-                    <h3 id="quiz-question" class="h5 fw-bold text-white mb-4">Carregando pergunta...</h3>
-
-                    <div id="quiz-options" class="d-grid gap-3 mb-4">
-                        <!-- Rendered via JS -->
-                    </div>
-
-                    <div id="quiz-explanation" class="alert alert-dark border-secondary text-white d-none mb-4" role="alert">
-                        <!-- Explanation rendered via JS -->
-                    </div>
-
-                    <div class="d-flex justify-content-end">
-                        <button id="quiz-next-btn" class="btn btn-usa px-4 py-2 rounded-3 fw-semibold d-none" onclick="handleNextQuestion()">
-                            Próxima Questão <i class="fa-solid fa-arrow-right ms-2"></i>
+                    <div class="col-md-5 d-flex justify-content-md-end gap-2 flex-wrap">
+                        <button class="btn btn-sm btn-outline-light rounded-pill px-3" id="expandAllBtn">
+                            <i class="fa-solid fa-angles-down me-1"></i>Expandir Todos
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" id="resetProgressBtn">
+                            <i class="fa-solid fa-rotate-left me-1"></i>Zerar
                         </button>
                     </div>
                 </div>
 
-                <div id="quiz-results" class="text-center py-4 d-none">
-                    <div class="mb-3">
-                        <i class="fa-solid fa-award text-warning display-1"></i>
+                <hr class="border-secondary my-3 opacity-25">
+
+                <div class="row g-3 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-info">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" id="searchInput" class="form-control search-dark" placeholder="Buscar conceito (ex: laicidade, sincretismo, self-service, judaísmo)...">
+                        </div>
                     </div>
-                    <h3 class="h4 fw-bold text-white">Quiz Concluído com Sucesso!</h3>
-                    <p id="quiz-final-text" class="text-white lead my-3"></p>
-                    <button class="btn btn-urss px-4 py-2 rounded-3 fw-semibold mt-2" onclick="restartQuiz()">
-                        <i class="fa-solid fa-rotate-right me-2"></i>Reiniciar Quiz
-                    </button>
+                    <div class="col-lg-6 d-flex justify-content-lg-end gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-glow-blue rounded-pill px-3 filter-btn active" data-filter="all">Todos (9)</button>
+                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 filter-btn" data-filter="pending">Pendentes</button>
+                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 filter-btn" data-filter="completed">Estudados</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid dos 9 Tópicos -->
+            <div class="row g-4" id="topicsContainer">
+                <!-- Renderizado via JavaScript -->
+            </div>
+
+            <div id="emptyState" class="glass-card p-5 text-center d-none">
+                <i class="fa-solid fa-magnifying-glass display-5 text-info mb-3"></i>
+                <h4 class="fw-bold">Nenhum tópico encontrado</h4>
+                <p class="text-white opacity-75 mb-0">Tente buscar outra palavra-chave ou limpe o filtro ativo.</p>
+            </div>
+        </section>
+
+        <!-- 4. GLOSSÁRIO CONCEITUAL -->
+        <section id="glossario" class="my-5 pt-3">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="p-3 rounded-3 bg-dark border border-secondary text-info">
+                    <i class="fa-solid fa-book-bookmark fa-xl"></i>
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-0 text-white">4. Glossário Conceitual Rápido</h2>
+                    <p class="text-white small mb-0 opacity-90">Termos essenciais que costumam aparecer em questões discursivas e objetivas</p>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-indigo">
+                        <h5 class="fw-bold text-info mb-2">Sincretismo Religioso</h5>
+                        <p class="small text-white mb-0">Fusão ou reinterpretação mútua entre elementos de tradições religiosas diferentes, gerando novas sínteses culturais e simbólicas.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-violet">
+                        <h5 class="fw-bold mb-2" style="color: #c4b5fd;">Hibridismo & Trânsito</h5>
+                        <p class="small text-white mb-0">Circulação livre do fiel por diversas religiões ao longo da vida, combinando rituais sem necessariamente filiar-se a uma única instituição.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-gold">
+                        <h5 class="fw-bold text-warning mb-2">Self-Service da Fé</h5>
+                        <p class="small text-white mb-0">Metáfora sociológica para a montagem individualizada da crença: o indivíduo escolhe "pedaços" de várias religiões conforme seu gosto.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-indigo">
+                        <h5 class="fw-bold text-info mb-2">Orientalização do Ocidente</h5>
+                        <p class="small text-white mb-0">Adoção de visões de mundo orientais (imanência, karma, meditação, unidade natureza-espírito) pelas sociedades ocidentais.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-violet">
+                        <h5 class="fw-bold mb-2" style="color: #c4b5fd;">Fundamentalismo</h5>
+                        <p class="small text-white mb-0">Movimento moderno de reação à secularização que defende a leitura literal e inquestionável dos textos sagrados contra o relativismo.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 border-gold">
+                        <h5 class="fw-bold text-warning mb-2">Nostra Aetate (1965)</h5>
+                        <p class="small text-white mb-0">Declaração histórica do Concílio Vaticano II que redefiniu positivamente as relações entre Cristianismo e Judaísmo, condenando o antissemitismo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FLASHCARDS 3D INTERATIVOS -->
+        <section id="cards" class="my-5 pt-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 rounded-3 bg-dark border border-secondary text-warning">
+                        <i class="fa-solid fa-clone fa-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="h3 fw-bold mb-0 text-white">5. Flashcards 3D de Memorização</h2>
+                        <p class="text-white small mb-0 opacity-90">Clique no cartão para girar e conferir a resposta</p>
+                    </div>
+                </div>
+                <span class="badge badge-neutral px-3 py-2 align-self-start align-self-md-center">
+                    <i class="fa-solid fa-hand-pointer me-1"></i>Interativo 3D
+                </span>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="flashcard-container mb-3" id="flashcardBox">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <span class="badge badge-blue mb-3 px-3 py-2" id="fcTopicBadge">Tema 1</span>
+                                <h4 class="fw-bold px-md-3 text-white" id="fcQuestion">Carregando...</h4>
+                                <small class="text-info mt-3"><i class="fa-solid fa-rotate me-1"></i>Clique para virar o cartão</small>
+                            </div>
+                            <div class="flashcard-back">
+                                <span class="badge badge-neutral mb-3 px-3 py-2">CONCEITO-CHAVE</span>
+                                <p class="fs-5 fw-medium px-md-3 mb-0 text-white" id="fcAnswer">Carregando...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-light rounded-pill px-4" id="prevCardBtn">
+                            <i class="fa-solid fa-chevron-left me-2"></i>Anterior
+                        </button>
+                        <span class="fw-bold text-warning fs-5" id="fcCounter">1 / 9</span>
+                        <button class="btn btn-glow-blue rounded-pill px-4" id="nextCardBtn">
+                            Próximo<i class="fa-solid fa-chevron-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. QUIZ INTERATIVO -->
+        <section id="quiz" class="my-5 pt-3">
+            <div class="glass-card p-4 p-md-5">
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-8">
+                        <span class="badge badge-neutral mb-2 px-3 py-1"><i class="fa-solid fa-fire me-1"></i>TREINO ATIVO</span>
+                        <h2 class="h3 fw-bold mb-1 text-white">6. Simulado Interativo (9 Questões)</h2>
+                        <p class="text-white small mb-0 opacity-90">Uma questão estratégica para cada um dos 9 temas do roteiro.</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <div class="d-inline-block px-4 py-2 rounded-3 bg-dark border border-warning text-warning fw-bold">
+                            Acertos: <span id="quizScore">0</span> / <span id="quizTotal">9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quizBody">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <span class="text-uppercase small fw-bold text-info" id="quizQuestionNumber">Questão 1 de 9</span>
+                        <span class="badge badge-violet px-3 py-1" id="quizCategory">Tema</span>
+                    </div>
+
+                    <h4 class="fw-bold mb-4 text-white" id="quizQuestionText">Carregando questão...</h4>
+
+                    <div class="d-grid gap-3 mb-4" id="quizOptions"></div>
+
+                    <div id="quizFeedback" class="alert d-none rounded-3 mb-4" role="alert"></div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-light rounded-pill px-4" id="restartQuizBtn">
+                            <i class="fa-solid fa-rotate-right me-2"></i>Reiniciar
+                        </button>
+                        <button class="btn btn-glow-blue rounded-pill px-4 d-none" id="nextQuizBtn">
+                            Próxima Questão<i class="fa-solid fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -795,163 +746,567 @@
     </div>
 
     <!-- Footer -->
-    <footer class="mt-5 py-4 border-top border-secondary text-center text-white small">
+    <footer class="border-top border-secondary border-opacity-25 py-4 text-center text-white small">
         <div class="container">
-            <p class="mb-1">Guia Didático da Guerra Fria • Design Moderno e Responsivo</p>
-            <p class="mb-0 opacity-80">Pronto para rodar localmente no seu navegador via arquivo HTML único.</p>
+            <p class="mb-1 fw-semibold">Portal de Estudos • Ensino Religioso — Prof. Humberto Oliveira Junior</p>
+            <p class="mb-0 opacity-75">Material de apoio didático sobre Religião, Cultura e Sociedade Contemporânea.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Toast de Feedback -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="statusToast" class="toast align-items-center text-bg-dark border border-secondary rounded-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-medium text-white" id="toastMessage">Progresso salvo!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Quiz Logic -->
     <script>
-        const questions = [
+        // ==========================================
+        // 1. OS 9 TÓPICOS DO CONTEÚDO
+        // ==========================================
+        const syllabusData = [
             {
-                q: "Qual evento é considerado o divisor físico mais emblemático da Guerra Fria na Europa?",
-                options: [
-                    "A construção do Canal de Suez",
-                    "A criação da OTAN em Washington",
-                    "A erupção do Muro de Berlim (1961)",
-                    "O bloqueio naval da Baía dos Porcos"
+                id: 1,
+                title: "Novos movimentos religiosos na sociedade contemporânea",
+                tag: "Pluralismo & Modernidade",
+                borderClass: "border-indigo",
+                summary: "Refere-se ao surgimento e expansão de grupos espirituais, esotéricos, neopentecostais e filosóficos a partir da segunda metade do século XX. Esses movimentos respondem às crises de sentido da modernidade, oferecendo experiências religiosas mais dinâmicas, comunitárias ou voltadas ao bem-estar individual.",
+                keyConcepts: [
+                    "Desinstitucionalização: busca pelo sagrado fora das igrejas tradicionais.",
+                    "Movimento Nova Era (New Age): espiritualidade holística, autocura e conexão cósmica.",
+                    "Pluralismo religioso: coexistência e competição entre diversas ofertas de fé."
                 ],
-                correct: 2,
-                exp: "O Muro de Berlim dividia a cidade em setor ocidental (capitalista) e oriental (socialista), sendo o símbolo físico máximo da Cortina de Ferro."
+                examTip: "Relacione o surgimento desses movimentos à crise das instituições tradicionais e à busca por experiências espirituais personalizadas."
             },
             {
-                q: "Qual foi a principal deliberação dos países reunidos na Conferência de Bandung (1955)?",
-                options: [
-                    "Criar uma aliança militar com a União Soviética",
-                    "Adotar o dólar como moeda oficial nos países asiáticos",
-                    "Fundar o Movimento dos Países Não Alinhados e combater o colonialismo",
-                    "Submeter o controle do petróleo africano aos EUA"
+                id: 2,
+                title: "Sincretismo e hibridismo religioso",
+                tag: "Identidade & Cultura",
+                borderClass: "border-violet",
+                summary: "O sincretismo ocorre quando elementos de diferentes tradições religiosas se fundem para criar novas práticas ou ressignificar símbolos (muito presente na formação cultural brasileira). Já o hibridismo religioso destaca a mistura fluida e contínua de crenças na contemporaneidade, sem necessariamente formar uma nova religião estruturada.",
+                keyConcepts: [
+                    "Sincretismo histórico: associação entre Orixás africanos e Santos católicos no Brasil colonial.",
+                    "Hibridismo contemporâneo: trânsito religioso onde o fiel combina rituais de origens distintas.",
+                    "Resistência cultural: o sincretismo também funcionou como estratégia de preservação da fé de povos escravizados."
                 ],
-                correct: 2,
-                exp: "A Conferência de Bandung reuniu 29 nações afro-asiáticas que rejeitaram o alinhamento cego às superpotências da Guerra Fria."
+                examTip: "Diferencie sincretismo (fusão histórica/simbólica) de trânsito religioso (circulação do indivíduo entre várias religiões)."
             },
             {
-                q: "O que previa a Doutrina Truman, lançada pelos EUA em 1947?",
-                options: [
-                    "Um plano de ajuda financeira à União Soviética",
-                    "A política de contenção global ao avanço do comunismo",
-                    "A unificação imediata da Península Coreana",
-                    "O desarmamento nuclear unilateral das superpotências"
+                id: 3,
+                title: "A orientalização do Ocidente e suas manifestações culturais e religiosas",
+                tag: "Intercâmbio Cultural",
+                borderClass: "border-gold",
+                summary: "Fenômeno estudado pelo sociólogo Colin Campbell que descreve a crescente adoção de visões de mundo, filosofias e práticas originárias do Oriente (Índia, China, Japão) pelas sociedades ocidentais, substituindo gradualmente o modelo tradicional ocidental dualista por uma visão mais holística e imanente.",
+                keyConcepts: [
+                    "Imanência vs. Transcendência: o divino percebido dentro da natureza e do próprio ser.",
+                    "Reencarnação e Karma: conceitos orientais amplamente absorvidos no imaginário ocidental.",
+                    "Práticas cotidianas: popularização do Yoga, meditação mindfulness, Ayurveda e Feng Shui."
                 ],
-                correct: 1,
-                exp: "A Doutrina Truman established a política de apoio financeiro e militar a países ameaçados pelo avanço da influência comunista soviética."
+                examTip: "A orientalização não significa apenas conversão formal ao Budismo ou Hinduísmo, mas a absorção cultural de seus valores."
             },
             {
-                q: "Qual foi o momento considerado o mais próximo de uma guerra nuclear direta entre EUA e URSS?",
-                options: [
-                    "Guerra do Vietnã em 1968",
-                    "Crise dos Mísseis em Cuba em 1962",
-                    "Lançamento do Sputnik 1 em 1957",
-                    "Queda de Saigon em 1975"
+                id: 4,
+                title: "Secularização e laicidade: conceitos e diferenças",
+                tag: "Sociologia & Direito",
+                borderClass: "border-indigo",
+                summary: "Embora relacionados, são conceitos distintos. A secularização é um processo histórico e sociológico pelo qual a religião perde o monopólio sobre a cultura, a ciência e a vida cotidiana. Já a laicidade é um princípio político e jurídico pelo qual o Estado se mantém neutro, sem religião oficial, garantindo a liberdade de crença e de não crença.",
+                keyConcepts: [
+                    "Secularização (Sociológico): perda de influência da religião nas esferas sociais e comportamentais.",
+                    "Laicidade (Político-Jurídico): separação entre Igreja e Estado; imparcialidade estatal.",
+                    "Estado Laico ≠ Estado Ateu: o Estado laico protege todas as religiões, enquanto o ateu proíbe ou combate a religião."
                 ],
-                correct: 1,
-                exp: "A Crise dos Mísseis em Cuba durou 13 dias e deixou o mundo sob iminente risco de aniquilação nuclear mútua."
+                examTip: "Conceito-chave: associe Secularização à sociedade/cultura e Laicidade ao Estado/leis."
             },
             {
-                q: "O que significavam os termos 'Perestroika' e 'Glasnost' promovidos por Mikhail Gorbachev?",
-                options: [
-                    "Reestruturação econômica e Transparência política",
-                    "Aliança militar e Corrida armamentista",
-                    "Espionagem estatal e Censura de imprensa",
-                    "Privatização total e Fechamento de fronteiras"
+                id: 5,
+                title: "A secularização e as transformações nas relações entre religião, política e sociedade",
+                tag: "Esfera Pública",
+                borderClass: "border-violet",
+                summary: "Com a secularização, a religião deixou de ser o centro legitimador do poder político e passou a atuar como um ator social entre outros na esfera pública. Contudo, hoje observa-se uma 'repolitização' ou 'dessecularização', na qual grupos religiosos organizam bancadas, partidos e pautas morais no debate democrático.",
+                keyConcepts: [
+                    "Privatização da fé: a crença torna-se uma escolha individual, não uma obrigação social.",
+                    "Esfera pública e religião: atuação de grupos religiosos em eleições, mídia e políticas públicas.",
+                    "Desencantamento do mundo (Max Weber): racionalização da vida e recuo das explicações mágicas."
                 ],
-                correct: 0,
-                exp: "A Perestroika buscou descentralizar a economia e introduzir mercado, enquanto a Glasnost garantiu liberdade de expressão e abertura política."
+                examTip: "A secularização não extinguiu a religião, mas transformou o modo como ela se organiza e dialoga com a política."
             },
             {
-                q: "O fenômeno do 'Ano da África' em 1960 refere-se a quê?",
-                options: [
-                    "À intervenção direta das tropas da OTAN no continente africano",
-                    "À independência formal de 17 países africanos em um único ano",
-                    "Ao início da exploração de mísseis nucleares soviéticos no Saara",
-                    "À unificação econômica de todos os países do continente"
+                id: 6,
+                title: "Fundamentalismo religioso e suas relações com a secularização",
+                tag: "Reação & Dogmatismo",
+                borderClass: "border-gold",
+                summary: "O fundamentalismo é um movimento reativo que surge justamente como resposta defensiva ao avanço da secularização e da modernidade. Caracteriza-se pela leitura literal dos textos sagrados, rejeição ao relativismo moral e desejo de restaurar princípios religiosos tradicionais na organização da sociedade.",
+                keyConcepts: [
+                    "Origem do termo: surgiu no início do século XX entre protestantes norte-americanos, mas hoje aplica-se a várias religiões.",
+                    "Literalismo escritural: recusa de interpretações históricas ou simbólicas dos textos sagrados.",
+                    "Reação à modernidade: oposição ao secularismo, ao pluralismo de valores e às mudanças nos costumes."
                 ],
-                correct: 1,
-                exp: "Em 1960, dezessete países africanos conquistaram a independência das metrópoles coloniais europeias."
+                examTip: "O fundamentalismo não é um 'resquício medieval', mas um fenômeno moderno criado em oposição direta à secularização."
+            },
+            {
+                id: 7,
+                title: "Mercado religioso e o fenômeno do self-service da fé",
+                tag: "Consumo & Espiritualidade",
+                borderClass: "border-indigo",
+                summary: "Na sociedade de consumo, as instituições religiosas passam a competir por fiéis utilizando marketing, mídia e linguagem empresarial (mercado religioso). Como consequência, surge o 'self-service da fé' (ou religião à la carte): o indivíduo monta sua própria espiritualidade combinando elementos de várias crenças conforme sua conveniência.",
+                keyConcepts: [
+                    "Religião à la carte: 'acredito em Deus, pratico yoga, vou à igreja às vezes e leio horóscopo'.",
+                    "Teologia da Prosperidade: associação entre fé, sucesso financeiro e consumo.",
+                    "Autonomia do fiel-consumidor: menor fidelidade institucional e maior busca por resultados imediatos."
+                ],
+                examTip: "Relacione o 'self-service da fé' com o individualismo contemporâneo e a lógica de escolha do consumidor."
+            },
+            {
+                id: 8,
+                title: "A influência das tradições religiosas orientais na cultura ocidental",
+                tag: "Filosofia & Bem-Estar",
+                borderClass: "border-violet",
+                summary: "Tradições como o Budismo, Hinduísmo, Taoísmo e Confucionismo impactaram profundamente a psicologia, a medicina integrativa, as artes e a filosofia no Ocidente. Conceitos como equilíbrio energético, compaixão, não-violência (Ahimsa) e atenção plena tornaram-se referências globais.",
+                keyConcepts: [
+                    "Budismo e Psicologia: influência direta nas terapias cognitivas e técnicas de redução de estresse.",
+                    "Hinduísmo e Filosofia: ideias de unidade do cosmos (Brahman/Atman) e não-violência (Gandhi).",
+                    "Taoísmo e Medicina: conceitos de Yin-Yang, acupuntura e harmonia com a natureza."
+                ],
+                examTip: "Destaque exemplos concretos de como essas tradições influenciam áreas seculares como saúde, esporte e artes."
+            },
+            {
+                id: 9,
+                title: "As relações históricas e religiosas entre Judaísmo e Cristianismo",
+                tag: "Raízes Abraâmicas",
+                borderClass: "border-gold",
+                summary: "Judaísmo e Cristianismo compartilham raízes históricas, éticas e teológicas profundas (religiões abraâmicas e monoteístas). O Cristianismo nasceu dentro do contexto judaico do século I, herdando a Bíblia Hebraica (Antigo Testamento), mas separou-se ao reconhecer Jesus de Nazaré como o Messias (Cristo), ponto não aceito pelo Judaísmo.",
+                keyConcepts: [
+                    "Patrimônio comum: monoteísmo ético, os Dez Mandamentos, os Profetas e a esperança messiânica.",
+                    "Ponto de ruptura: a natureza divina de Jesus e a abertura da mensagem aos gentios (não-judeus) por Paulo de Tarso.",
+                    "Diálogo inter-religioso: após séculos de conflitos, documentos como a 'Nostra Aetate' (1965) promoveram reconciliação."
+                ],
+                examTip: "Saiba apontar tanto as semelhanças (Antigo Testamento, monoteísmo, ética) quanto a principal divergência (messianidade de Jesus)."
             }
         ];
 
-        let currentQ = 0;
-        let score = 0;
-        let answered = false;
+        // ==========================================
+        // 2. FLASHCARDS E QUIZ
+        // ==========================================
+        const flashcardsData = [
+            { topic: "Tema 4 • Laicidade", q: "Qual a diferença entre Estado Laico e Estado Ateu?", a: "O Estado Laico é neutro e garante liberdade a todas as religiões (e aos não religiosos). O Estado Ateu rejeita ou proíbe manifestações religiosas." },
+            { topic: "Tema 4 • Conceitos", q: "O que diferencia Secularização de Laicidade?", a: "Secularização é o processo social/cultural de perda de influência da religião. Laicidade é o princípio político/jurídico de separação entre Estado e Igreja." },
+            { topic: "Tema 7 • Contemporaneidade", q: "O que significa o fenômeno do 'self-service da fé'?", a: "É a atitude do indivíduo contemporâneo que monta sua própria espiritualidade combinando crenças e rituais de várias religiões diferentes, como num buffet." },
+            { topic: "Tema 6 • Reação Moderna", q: "Como o fundamentalismo religioso se relaciona com a secularização?", a: "O fundamentalismo surge como uma reação defensiva contra a secularização e a modernidade, exigindo leitura literal dos textos sagrados." },
+            { topic: "Tema 2 • Cultura Brasileira", q: "Diferencie sincretismo religioso de trânsito religioso.", a: "Sincretismo é a fusão de elementos de religiões distintas (ex: santos católicos e orixás). Trânsito religioso é a circulação do fiel entre diferentes igrejas ao longo da vida." },
+            { topic: "Tema 3 • Sociologia", q: "O que é a 'Orientalização do Ocidente'?", a: "É a crescente adoção de visões de mundo e práticas orientais (meditação, yoga, reencarnação, visão holística) pela cultura ocidental." },
+            { topic: "Tema 9 • Raízes Históricas", q: "Qual é o principal ponto de ruptura teológica entre Judaísmo e Cristianismo?", a: "O reconhecimento de Jesus de Nazaré como o Messias esperado e Filho de Deus pelos cristãos, o que não é aceito pelo Judaísmo." },
+            { topic: "Tema 5 • Esfera Pública", q: "O que Max Weber chamou de 'desencantamento do mundo'?", a: "O processo histórico de racionalização e avanço da ciência que reduziu as explicações mágicas e religiosas sobre a natureza e a sociedade." },
+            { topic: "Tema 1 • Novos Movimentos", q: "O que caracteriza o movimento Nova Era (New Age)?", a: "Uma espiritualidade não institucional, eclética e holística, focada no autoconhecimento, energias, terapias alternativas e conexão com a natureza." }
+        ];
 
-        function loadQuestion() {
-            answered = false;
-            const q = questions[currentQ];
-            document.getElementById('quiz-progress').innerText = `Questão ${currentQ + 1} de ${questions.length}`;
-            document.getElementById('quiz-question').innerText = q.q;
-            document.getElementById('quiz-explanation').classList.add('d-none');
-            document.getElementById('quiz-next-btn').classList.add('d-none');
+        const quizData = [
+            {
+                category: "Tema 4 • Secularização e Laicidade",
+                question: "Sobre a relação entre secularização e laicidade, assinale a alternativa correta:",
+                options: [
+                    "Laicidade significa que o Estado proíbe cultos religiosos em espaços públicos.",
+                    "Secularização é uma lei constitucional, enquanto laicidade é uma prática mística.",
+                    "Secularização refere-se à perda de monopólio cultural da religião na sociedade; laicidade refere-se à neutralidade religiosa do Estado.",
+                    "Ambas significam o desaparecimento total da fé no mundo moderno."
+                ],
+                correct: 2,
+                explanation: "Perfeito! Secularização é um processo sociológico/cultural, enquanto laicidade é um princípio jurídico-político de imparcialidade do Estado."
+            },
+            {
+                category: "Tema 7 • Mercado Religioso",
+                question: "Quando uma pessoa frequenta cultos cristãos, pratica meditação budista, consulta astrologia e acredita em reencarnação, estamos diante do fenômeno chamado:",
+                options: [
+                    "Fundamentalismo escritural",
+                    "Self-service da fé (religião à la carte)",
+                    "Monoteísmo exclusivista",
+                    "Ateísmo prático"
+                ],
+                correct: 1,
+                explanation: "Exato! No 'self-service da fé', o indivíduo seleciona elementos de diversas tradições conforme suas necessidades pessoais."
+            },
+            {
+                category: "Tema 6 • Fundamentalismo",
+                question: "Qual é a relação histórica entre o fundamentalismo religioso e a secularização?",
+                options: [
+                    "O fundamentalismo é um movimento moderno que reage contra a secularização, defendendo o literalismo dos textos sagrados.",
+                    "O fundamentalismo foi criado para promover a mistura entre todas as religiões.",
+                    "A secularização é uma consequência direta do fundamentalismo medieval.",
+                    "Não existe nenhuma relação entre esses dois fenômenos."
+                ],
+                correct: 0,
+                explanation: "Isso mesmo! O fundamentalismo nasce como resposta reativa ao relativismo e à perda de espaço da religião causados pela secularização."
+            },
+            {
+                category: "Tema 2 • Sincretismo e Hibridismo",
+                question: "No Brasil colonial, a associação entre santos católicos e orixás das religiões de matriz africana exemplifica o:",
+                options: [
+                    "Estado teocrático",
+                    "Sincretismo religioso",
+                    "Desencantamento do mundo",
+                    "Fundamentalismo islâmico"
+                ],
+                correct: 1,
+                explanation: "Correto! O sincretismo religioso permitiu a fusão simbólica e também serviu como resistência cultural dos povos escravizados."
+            },
+            {
+                category: "Tema 3 & 8 • Influência Oriental",
+                question: "A popularização da meditação mindfulness, do Yoga e da noção de karma no Ocidente ilustra:",
+                options: [
+                    "A imposição militar de países asiáticos sobre a Europa.",
+                    "A orientalização do Ocidente e a absorção cultural de práticas orientais.",
+                    "O fim completo das religiões abraâmicas.",
+                    "A proibição da medicina ocidental."
+                ],
+                correct: 1,
+                explanation: "Muito bem! A orientalização do Ocidente mostra como valores holísticos e práticas orientais foram integrados ao cotidiano ocidental."
+            },
+            {
+                category: "Tema 9 • Judaísmo e Cristianismo",
+                question: "Qual elemento constitui um patrimônio histórico e religioso compartilhado entre Judaísmo e Cristianismo?",
+                options: [
+                    "A aceitação do Novo Testamento como escritura sagrada.",
+                    "O reconhecimento de Jesus como o Messias prometido.",
+                    "O monoteísmo ético e os livros da Bíblia Hebraica (Antigo Testamento).",
+                    "A celebração da Páscoa exclusivamente em memória da ressurreição de Cristo."
+                ],
+                correct: 2,
+                explanation: "Correto! Ambas são religiões monoteístas abraâmicas que compartilham a Bíblia Hebraica (Torá, Profetas e Escritos) e os Dez Mandamentos."
+            },
+            {
+                category: "Tema 1 • Novos Movimentos Religiosos",
+                question: "Os Novos Movimentos Religiosos (NMR) na sociedade contemporânea caracterizam-se principalmente por:",
+                options: [
+                    "Exigirem vínculo hereditário obrigatório desde o nascimento.",
+                    "Responderem às crises de sentido modernas com espiritualidades mais flexíveis ou comunitárias.",
+                    "Rejeitarem qualquer uso de tecnologia ou meios de comunicação.",
+                    "Existirem apenas em sociedades rurais isoladas."
+                ],
+                correct: 1,
+                explanation: "Isso aí! Os NMR surgem em contextos urbanos e modernos, oferecendo novas formas de pertencimento e experiência espiritual."
+            },
+            {
+                category: "Tema 5 • Religião, Política e Sociedade",
+                question: "Na contemporaneidade, o fenômeno da 'dessecularização' ou retorno da religião à esfera pública significa que:",
+                options: [
+                    "As religiões voltaram a atuar ativamente em debates políticos, mídia e eleições.",
+                    "A ciência foi abolida nas universidades.",
+                    "O voto passou a ser restrito aos líderes religiosos.",
+                    "Todas as constituições aboliram a liberdade religiosa."
+                ],
+                correct: 0,
+                explanation: "Perfeito! Mesmo em sociedades secularizadas, grupos religiosos continuam influentes como atores políticos e sociais na esfera pública."
+            },
+            {
+                category: "Tema 4 • Aplicação Prática",
+                question: "Uma escola pública brasileira que oferece ensino religioso facultativo, respeitando todas as matrizes culturais sem proselitismo, está alinhada ao princípio da:",
+                options: [
+                    "Teocracia",
+                    "Laicidade estatal",
+                    "Intolerância religiosa",
+                    "Hegemonia confessional"
+                ],
+                correct: 1,
+                explanation: "Excelente! A laicidade garante o respeito à diversidade religiosa sem que o Estado adote ou imponha uma fé oficial."
+            }
+        ];
 
-            const container = document.getElementById('quiz-options');
+        // ==========================================
+        // 3. ESTADO E RENDERIZAÇÃO DOS 9 TÓPICOS
+        // ==========================================
+        let completedTopics = JSON.parse(localStorage.getItem('humberto_er_completed_v2')) || [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let allExpanded = false;
+
+        const toastEl = document.getElementById('statusToast');
+        const toastInstance = new bootstrap.Toast(toastEl, { delay: 2000 });
+
+        function showToast(msg) {
+            document.getElementById('toastMessage').textContent = msg;
+            toastInstance.show();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('humberto_er_completed_v2', JSON.stringify(completedTopics));
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const total = syllabusData.length;
+            const count = completedTopics.length;
+            const percent = Math.round((count / total) * 100);
+
+            document.getElementById('progressText').textContent = `${count} de ${total} concluídos (${percent}%)`;
+            const bar = document.getElementById('progressBar');
+            bar.style.width = `${percent}%`;
+        }
+
+        function renderTopics() {
+            const container = document.getElementById('topicsContainer');
+            const emptyState = document.getElementById('emptyState');
             container.innerHTML = '';
 
-            q.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-opt';
-                btn.innerHTML = `<strong class="text-warning me-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
-                btn.onclick = () => selectAnswer(idx, btn);
-                container.appendChild(btn);
+            const filtered = syllabusData.filter(topic => {
+                const isDone = completedTopics.includes(topic.id);
+                if (currentFilter === 'completed' && !isDone) return false;
+                if (currentFilter === 'pending' && isDone) return false;
+
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    const inTitle = topic.title.toLowerCase().includes(q);
+                    const inSummary = topic.summary.toLowerCase().includes(q);
+                    const inTag = topic.tag.toLowerCase().includes(q);
+                    const inConcepts = topic.keyConcepts.some(c => c.toLowerCase().includes(q));
+                    return inTitle || inSummary || inTag || inConcepts;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('d-none');
+                return;
+            } else {
+                emptyState.classList.add('d-none');
+            }
+
+            filtered.forEach(topic => {
+                const isDone = completedTopics.includes(topic.id);
+                const col = document.createElement('div');
+                col.className = 'col-12';
+
+                col.innerHTML = `
+                    <article class="glass-card p-4 ${isDone ? 'completed-card' : topic.borderClass}">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center fw-bold flex-shrink-0 ${isDone ? 'bg-success text-white' : 'bg-dark border border-secondary text-warning'}" style="width: 40px; height: 40px;">
+                                    ${isDone ? '<i class="fa-solid fa-check"></i>' : topic.id}
+                                </div>
+                                <div>
+                                    <span class="badge badge-blue mb-1">${topic.tag}</span>
+                                    <h5 class="fw-bold mb-0 text-white">${topic.title}</h5>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 ms-auto ms-md-0">
+                                <div class="form-check d-flex align-items-center gap-2 mb-0">
+                                    <input class="form-check-input study-check" type="checkbox" id="check-${topic.id}" ${isDone ? 'checked' : ''} onchange="toggleTopic(${topic.id})">
+                                    <label class="form-check-label small fw-semibold text-white user-select-none" for="check-${topic.id}" style="cursor:pointer;">
+                                        ${isDone ? '<span class="text-success">Estudado</span>' : 'Marcar como estudado'}
+                                    </label>
+                                </div>
+
+                                <button class="btn btn-sm btn-outline-light rounded-pill px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${topic.id}" aria-expanded="${allExpanded}">
+                                    Resumo <i class="fa-solid fa-chevron-down ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="collapse ${allExpanded ? 'show' : ''} mt-3 pt-3 border-top border-secondary border-opacity-25" id="collapse-${topic.id}">
+                            <p class="text-white mb-3 lh-base">${topic.summary}</p>
+                            
+                            <div class="row g-3">
+                                <div class="col-lg-8">
+                                    <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary h-100">
+                                        <h6 class="fw-bold text-info mb-2"><i class="fa-solid fa-key me-2"></i>Conceitos-Chave:</h6>
+                                        <ul class="mb-0 ps-3 small text-white d-flex flex-column gap-1">
+                                            ${topic.keyConcepts.map(c => `<li>${c}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-warning h-100">
+                                        <h6 class="fw-bold text-warning mb-1"><i class="fa-solid fa-lightbulb me-2"></i>Ponto de Atenção:</h6>
+                                        <p class="small text-white mb-0">${topic.examTip}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                container.appendChild(col);
             });
         }
 
-        function selectAnswer(selectedIdx, btnElement) {
-            if (answered) return;
-            answered = true;
-            const q = questions[currentQ];
-            const options = document.getElementById('quiz-options').children;
+        window.toggleTopic = function(id) {
+            if (completedTopics.includes(id)) {
+                completedTopics = completedTopics.filter(item => item !== id);
+                showToast(`Tópico ${id} marcado como pendente.`);
+            } else {
+                completedTopics.push(id);
+                showToast(`Tópico ${id} concluído!`);
+            }
+            saveProgress();
+            renderTopics();
+        };
+
+        // Filtros e Busca
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('btn-glow-blue', 'active');
+                    b.classList.add('btn-outline-light');
+                });
+                btn.classList.remove('btn-outline-light');
+                btn.classList.add('btn-glow-blue', 'active');
+                currentFilter = btn.dataset.filter;
+                renderTopics();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTopics();
+        });
+
+        document.getElementById('expandAllBtn').addEventListener('click', (e) => {
+            allExpanded = !allExpanded;
+            e.currentTarget.innerHTML = allExpanded
+                ? '<i class="fa-solid fa-angles-up me-1"></i>Recolher Todos'
+                : '<i class="fa-solid fa-angles-down me-1"></i>Expandir Todos';
+            renderTopics();
+        });
+
+        document.getElementById('resetProgressBtn').addEventListener('click', () => {
+            completedTopics = [];
+            saveProgress();
+            renderTopics();
+            showToast('Progresso zerado.');
+        });
+
+        // ==========================================
+        // 4. FLASHCARDS 3D
+        // ==========================================
+        let currentCardIndex = 0;
+        const flashcardBox = document.getElementById('flashcardBox');
+
+        function renderFlashcard() {
+            flashcardBox.classList.remove('flipped');
+            const card = flashcardsData[currentCardIndex];
+            document.getElementById('fcTopicBadge').textContent = card.topic;
+            document.getElementById('fcQuestion').textContent = card.q;
+            document.getElementById('fcAnswer').textContent = card.a;
+            document.getElementById('fcCounter').textContent = `${currentCardIndex + 1} / ${flashcardsData.length}`;
+        }
+
+        flashcardBox.addEventListener('click', () => {
+            flashcardBox.classList.toggle('flipped');
+        });
+
+        document.getElementById('prevCardBtn').addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            renderFlashcard();
+        });
+
+        document.getElementById('nextCardBtn').addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex + 1) % flashcardsData.length;
+            renderFlashcard();
+        });
+
+        // ==========================================
+        // 5. QUIZ INTERATIVO
+        // ==========================================
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let answeredCurrent = false;
+
+        function renderQuiz() {
+            answeredCurrent = false;
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quizTotal').textContent = quizData.length;
+            document.getElementById('quizScore').textContent = quizScore;
+            document.getElementById('quizQuestionNumber').textContent = `Questão ${currentQuizIndex + 1} de ${quizData.length}`;
+            document.getElementById('quizCategory').textContent = q.category;
+            document.getElementById('quizQuestionText').textContent = q.question;
+
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.add('d-none');
+            document.getElementById('nextQuizBtn').classList.add('d-none');
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn quiz-opt';
+                btn.innerHTML = `<span class="badge badge-blue me-2">${String.fromCharCode(65 + idx)}</span> ${optText}`;
+                btn.addEventListener('click', () => handleQuizAnswer(idx, btn));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selectedIdx, clickedBtn) {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+
+            const q = quizData[currentQuizIndex];
+            const allButtons = document.querySelectorAll('.quiz-opt');
+            const feedback = document.getElementById('quizFeedback');
+
+            allButtons.forEach((b, idx) => {
+                b.disabled = true;
+                if (idx === q.correct) {
+                    b.classList.add('correct');
+                }
+            });
 
             if (selectedIdx === q.correct) {
-                btnElement.style.borderColor = '#22c55e';
-                btnElement.style.background = 'rgba(34, 197, 94, 0.15)';
-                score += 20;
-                document.getElementById('quiz-score').innerText = `Pontuação: ${score}`;
+                quizScore++;
+                document.getElementById('quizScore').textContent = quizScore;
+                feedback.className = 'alert alert-success bg-dark text-success border-success rounded-3 mb-4';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check me-2"></i><strong>Correto!</strong> ${q.explanation}`;
             } else {
-                btnElement.style.borderColor = '#ef4444';
-                btnElement.style.background = 'rgba(239, 68, 68, 0.15)';
-                options[q.correct].style.borderColor = '#22c55e';
-                options[q.correct].style.background = 'rgba(34, 197, 94, 0.15)';
+                clickedBtn.classList.add('wrong');
+                feedback.className = 'alert alert-danger bg-dark text-danger border-danger rounded-3 mb-4';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark me-2"></i><strong>Atenção!</strong> ${q.explanation}`;
             }
 
-            for (let b of options) {
-                b.style.pointerEvents = 'none';
-            }
+            feedback.classList.remove('d-none');
 
-            const expBox = document.getElementById('quiz-explanation');
-            expBox.innerHTML = `<strong><i class="fa-solid fa-circle-info me-2"></i>Explicação:</strong> ${q.exp}`;
-            expBox.classList.remove('d-none');
-
-            document.getElementById('quiz-next-btn').classList.remove('d-none');
+            const nextBtn = document.getElementById('nextQuizBtn');
+            nextBtn.classList.remove('d-none');
+            nextBtn.innerHTML = currentQuizIndex < quizData.length - 1
+                ? 'Próxima Questão<i class="fa-solid fa-arrow-right ms-2"></i>'
+                : 'Ver Resultado Final<i class="fa-solid fa-trophy ms-2"></i>';
         }
 
-        function handleNextQuestion() {
-            currentQ++;
-            if (currentQ < questions.length) {
-                loadQuestion();
+        document.getElementById('nextQuizBtn').addEventListener('click', () => {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuiz();
             } else {
-                document.getElementById('quiz-wrapper').classList.add('d-none');
-                document.getElementById('quiz-results').classList.remove('d-none');
-                document.getElementById('quiz-final-text').innerText = `Você concluiu o teste acertando ${(score/100)*questions.length} de ${questions.length} questões (${score} pontos)!`;
+                const percentage = Math.round((quizScore / quizData.length) * 100);
+                document.getElementById('quizOptions').innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fa-solid fa-trophy text-warning display-3 mb-3 d-block"></i>
+                        <h3 class="fw-bold text-white">Simulado Concluído!</h3>
+                        <p class="lead text-white">Você acertou <strong class="text-warning">${quizScore} de ${quizData.length}</strong> questões (${percentage}%).</p>
+                        <p class="text-white opacity-75 mb-0">${percentage >= 70 ? 'Excelente domínio dos conceitos de Ensino Religioso!' : 'Revise os cards acima e tente novamente para fixar os conceitos.'}</p>
+                    </div>
+                `;
+                document.getElementById('quizFeedback').classList.add('d-none');
+                document.getElementById('nextQuizBtn').classList.add('d-none');
             }
-        }
+        });
 
-        function restartQuiz() {
-            currentQ = 0;
-            score = 0;
-            document.getElementById('quiz-score').innerText = `Pontuação: 0`;
-            document.getElementById('quiz-results').classList.add('d-none');
-            document.getElementById('quiz-wrapper').classList.remove('d-none');
-            loadQuestion();
-        }
+        document.getElementById('restartQuizBtn').addEventListener('click', () => {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuiz();
+        });
 
-        window.onload = function() {
-            loadQuestion();
-        }
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+            renderTopics();
+            renderFlashcard();
+            renderQuiz();
+        });
     </script>
 </body>
 </html>
